@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Provider store={store}>
-        <Filter/>
+        <Filter />
       </Provider>,sdfhsdfh
     </div>
   );
