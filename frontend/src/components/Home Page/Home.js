@@ -43,8 +43,7 @@ const HomePage = () => {
     <h1>Home Page</h1>
     {filteredResults ? (
       <>
-        <Chart data={filteredResults.chartData} />
-        <Statistics data={filteredResults.statisticsData} />
+        
       </>
     ) : (
       <p>No data available. Please apply filters to view results.</p>

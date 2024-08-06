@@ -11,7 +11,8 @@ import {
     setFilteredResults
 } from '../../../redux/reducers/filterReducer';
 import { fetchFilteredData } from '../../../redux/apis/fetchDataApi';
-import { getUserIdFromToken } from '../../redux/actions/authActions';
+import { getUserIdFromToken } from '../../../redux/actions/authActions';
+
 
 const Filter = () => {
     const userId = getUserIdFromToken(); // Ensure this gets the correct userId

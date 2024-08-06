@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { login } from '../apis/logInApi';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
+
 
 
 export const loginUser = createAsyncThunk(
