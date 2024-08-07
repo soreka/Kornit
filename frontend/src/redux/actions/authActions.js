@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 
 
 export const loginUser = createAsyncThunk(
-    'auth/loginUser',
+    'auth/loginUser', /* [slice name]/[action name] */
     async ({ email, password }, thunkAPI) => {
       try {
         const data = await login(email, password);

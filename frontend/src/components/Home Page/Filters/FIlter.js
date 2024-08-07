@@ -10,7 +10,7 @@ import {
     loadFilters,
     setFilteredResults
 } from '../../../redux/reducers/filterReducer';
-import { fetchFilteredData } from '../../../redux/apis/fetchDataApi';
+import { fetchFilteredData } from '../../../redux/apis/fetchFilteredDataApi';
 import { getUserIdFromToken } from '../../../redux/actions/authActions';
 
 

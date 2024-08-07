@@ -1,13 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {fetchFilteredUserData} from '../apis/fetchFilteredDataApi';
 
 const initialState = {
-  users: {}, // Keyed by userId
+  users: {
+    loading: false,
+    error: null
+  }
 };
 
 const filterSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
+    fetchFilteredDataStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchFilteredDatasSuccess(state, action) {
+      state.loading = false;
+      state.regions = action.payload;
+    },
+    fetchFilteredDataFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+
     setRegions(state, action) {
       const { userId, regions } = action.payload;
       if (!state.users[userId]) {
@@ -16,8 +34,8 @@ const filterSlice = createSlice({
           machineTypes: [],
           clientNames: [],
           currentFilters: {},
-          filterHistory: [],
-          filteredResults: [], // Updated to array
+          filterHistory: {},
+          filteredResults: {}
         };
       }
       state.users[userId].regions = regions;
@@ -30,8 +48,8 @@ const filterSlice = createSlice({
           machineTypes: [],
           clientNames: [],
           currentFilters: {},
-          filterHistory: [],
-          filteredResults: [],
+          filterHistory: {},
+          filteredResults: {}
         };
       }
       state.users[userId].machineTypes = machineTypes;
@@ -44,22 +62,22 @@ const filterSlice = createSlice({
           machineTypes: [],
           clientNames: [],
           currentFilters: {},
-          filterHistory: [],
-          filteredResults: [],
+          filterHistory: {},
+          filteredResults: {}
         };
       }
       state.users[userId].clientNames = clientNames;
     },
     applyFilters(state, action) {
-      const { userId, results } = action.payload;
+      const { userId, FilteredData } = action.payload;
       if (!state.users[userId]) {
         state.users[userId] = {
           regions: [],
           machineTypes: [],
           clientNames: [],
           currentFilters: {},
-          filterHistory: [],
-          filteredResults: [],
+          filterHistory: {},
+          filteredResults: {}
         };
       }
       const filters = {
@@ -70,7 +88,7 @@ const filterSlice = createSlice({
       state.users[userId].currentFilters = filters;
       state.users[userId].filterHistory.push(filters);
       localStorage.setItem(`currentFilters_${userId}`, JSON.stringify(filters));
-      state.users[userId].filteredResults = results;
+      state.users[userId].filteredResults = FilteredData;
     },
     resetFilters(state, action) {
       const { userId } = action.payload;
@@ -81,14 +99,14 @@ const filterSlice = createSlice({
           clientNames: [],
           currentFilters: {},
           filterHistory: [],
-          filteredResults: [],
+          filteredResults: []
         };
       }
       state.users[userId].regions = [];
       state.users[userId].machineTypes = [];
       state.users[userId].clientNames = [];
       state.users[userId].currentFilters = {};
-      state.users[userId].filteredResults = [];
+      state.users[userId].filteredResults = {};
     },
     clearHistory(state, action) {
       const { userId } = action.payload;
@@ -98,8 +116,8 @@ const filterSlice = createSlice({
           machineTypes: [],
           clientNames: [],
           currentFilters: {},
-          filterHistory: [],
-          filteredResults: [],
+          filterHistory: {},
+          filteredResults: {}
         };
       }
       state.users[userId].filterHistory = [];
@@ -114,8 +132,8 @@ const filterSlice = createSlice({
             machineTypes: [],
             clientNames: [],
             currentFilters: {},
-            filterHistory: [],
-            filteredResults: [],
+            filterHistory: {},
+            filteredResults: {}
           };
         }
         state.users[userId].regions = savedFilters.regions;
@@ -132,13 +150,31 @@ const filterSlice = createSlice({
           machineTypes: [],
           clientNames: [],
           currentFilters: {},
-          filterHistory: [],
-          filteredResults: [],
+          filterHistory: {},
+          filteredResults: {}
         };
       }
       state.users[userId].filteredResults = results;
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchFilteredUserData.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+
+      })
+      .addCase(fetchFilteredUserData.fulfilled, (state, action) => {
+        const { userId, FilteredData } = action.payload;
+        state.loading = false;
+        state.regions = action.payload;
+        state.users[userId].filteredResults = FilteredData;
+      })
+      .addCase(fetchFilteredUserData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message
+      })
+  }
 });
 
 export const {
