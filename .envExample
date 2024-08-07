@@ -1,4 +1,4 @@
-MONGO_URI=mongodb+srv://ahmedmtayah:gGJbXHw13cm5PJnA@kornit-dev.iuxsklq.mongodb.net/
+MONGO_URI=mongodb+srv://<your username>:<your password>@kornit-dev.iuxsklq.mongodb.net/
 JWT_SECRET=your_jwt_secret_key
 FIREBASE_API_KEY=your_firebase_api_key
 FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
