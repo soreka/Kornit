@@ -28,7 +28,7 @@ const sendSMSNotification = async (customerName, db) => {
     }
     try {
         const message = await client.messages.create({
-            body: 'Hi, please fill the form again. Thank you!',
+            body: `Hello ${customerName},\n\nWe kindly request that you fill out the form again. Thank you for your attention.\n\nBest regards,\nThe Kornit Team`,
             from: process.env.TWILIO_FROM_NUMBER,
             to: customer.phone.trim()
         });
@@ -46,9 +46,20 @@ const makeVoiceCall = async (customerName, db) => {
         console.error(`No valid phone number found for ${customerName}`);
         return;
     }
+
+    // TwiML message to be used in the voice call
+    const twimlMessage = `
+        <Response>
+            <Say voice="alice" rate="x-slow">
+                Hello ${customerName}, this is Kornit. We kindly request that you fill out the form again. Thank you for your attention,Best regards,The Kornit Team.
+            </Say>
+        </Response>
+    `;
+
     try {
+        
         const call = await client.calls.create({
-            url: process.env.TWIML_URL,
+            twiml: twimlMessage, // TwiML message directly
             to: customer.phone.trim(),
             from: process.env.TWILIO_FROM_NUMBER
         });
@@ -67,10 +78,10 @@ const sendEmailNotification = async (customerName, db) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: customer.email.trim(),
-        subject: 'Notification from Nodemailer',
-        text: 'Hi, please fill the form again. Thank you!',
-        html: '<h3>Hi, please fill the form again. Thank you!</h3>'
-    };
+        subject: 'Notification from Kornit',
+        text: `Hello ${customerName},\n\n We kindly request that you fill out the form again. Thank you for your attention.\n\nBest regards,\nThe Kornit Team`,
+        html: `<p>Hello ${customerName},</p><p>We kindly request that you fill out the form again. Thank you for your attention.</p><p>Best regards,<br>The Kornit Team</p>`
+   };
     try {
         await transporter.sendMail(mailOptions);
         console.log(`Email sent to ${customer.email}`);
