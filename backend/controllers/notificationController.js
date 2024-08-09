@@ -11,9 +11,6 @@ const sendNotification = async (req, res) => {
             case 'sms':
                 await sendSMSNotification(customerName, db);
                 break;
-            case 'whatsapp':
-                await sendWhatsAppNotification(customerName, db);
-                break;
             case 'call':
                 await makeVoiceCall(customerName, db);
                 break;

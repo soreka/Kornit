@@ -29,7 +29,6 @@ const NotificationBox = () => {
             {showButtons && (
                 <div>
                     <button onClick={() => handleSendNotification('sms')}>Send SMS</button>
-                    <button onClick={() => handleSendNotification('whatsapp')}>Send WhatsApp</button>
                     <button onClick={() => handleSendNotification('call')}>Make Call</button>
                     <button onClick={() => handleSendNotification('email')}>Send Email</button>
                 </div>

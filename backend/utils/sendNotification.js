@@ -38,23 +38,7 @@ const sendSMSNotification = async (customerName, db) => {
     }
 };
 
-const sendWhatsAppNotification = async (customerName, db) => {
-    const customer = await getCustomerData(customerName, db);
-    if (!customer || !customer.phone) {
-        console.error(`No valid phone number found for ${customerName}`);
-        return;
-    }
-    try {
-        const message = await client.messages.create({
-            body: 'Hi, please fill the form again. Thank you!',
-            from: `whatsapp:${process.env.TWILIO_FROM_WHATSAPP_NUMBER}`,
-            to: `whatsapp:${customer.phone.trim()}`
-        });
-        console.log(`WhatsApp message sent to ${customer.phone} with SID: ${message.sid}`);
-    } catch (error) {
-        console.error(`Failed to send WhatsApp message to ${customer.phone}:`, error);
-    }
-};
+
 
 const makeVoiceCall = async (customerName, db) => {
     const customer = await getCustomerData(customerName, db);
@@ -97,7 +81,6 @@ const sendEmailNotification = async (customerName, db) => {
 
 module.exports = {
     sendSMSNotification,
-    sendWhatsAppNotification,
     makeVoiceCall,
     sendEmailNotification
 };
