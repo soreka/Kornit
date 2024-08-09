@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const { MongoClient } = require('mongodb');
 const dotenv = require('dotenv');
 
@@ -17,6 +17,29 @@ mongoDB.connect();
 const db = mongoDB.db('kornit-dev');
 
 
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});*/
+const express = require('express');
+const connectDB = require('./config/db');
+const notificationRoutes = require('./routes/notificationRoutes');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Connect to Database
+connectDB();
+
+// Init Middleware
+app.use(express.json());
+
+// Define Routes
+app.use('/api/notifications', notificationRoutes);
+
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
