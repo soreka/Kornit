@@ -4,8 +4,10 @@ import '../assets/styles/dashboard.css'
 import { useState } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png'
 import DataBox from '../components/DataBox';
+import { useNavigate } from "react-router-dom";
 
 function DashBoard() {
+    const navigate = useNavigate();
     const [client, setClient] = useState('Mohamad')
     const [region, setRegion] = useState('USA')
     const [clickedDate, setClickedDate] = useState("Year")
@@ -22,7 +24,7 @@ function DashBoard() {
                     <TextField label="Region" className='dataFilter' disabled value={region} />
                 </Grid>
                 <Grid item xs={1} sm={2} md={3}>
-                    <Button className='dataFilter filterBT' variant='outlined'><span style={{ display: 'flex', alignItems: 'center' }}>
+                    <Button className='dataFilter filterBT' variant='outlined'><span style={{ display: 'flex', alignItems: 'center' }} onClick={() => navigate('/filter')}>
                         Filter
                         <img
                             src={filterImg}
@@ -30,7 +32,7 @@ function DashBoard() {
                             style={{ paddingLeft: '8px', order: 999, width: '18px', height: '18px' }}
                             className="myIcon"
                         />
-                    </span>
+                        </span>
                     </Button>
                 </Grid>
             </Grid>

@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import "../../src/assets/styles/filter.css";
 import Search from "../components/Search";
 import { Button, Grid } from "@mui/material";
+import ClientFilter from '../components/ClientsFilter'
+import { useNavigate } from "react-router-dom";
+
 export default function Filters() {
+  const navigate = useNavigate();
   const [value, setValue] = React.useState([]);
   const discard = () => {
     setValue([]);
@@ -24,7 +28,10 @@ export default function Filters() {
           alignContent: "center",
         }}
       >
-        <Link>
+        <Link to='dashboard' onClick={(e) =>{
+          e.preventDefault();
+          navigate('/dashboard')
+        } }>
           <ArrowBackIosIcon />
         </Link>
       </nav>
@@ -32,7 +39,10 @@ export default function Filters() {
         <Grid item xs={12}>
           <Search value={value} setValue={setValue} />
         </Grid>
-        <Grid item container xs={12} spacing={10}>
+        </Grid>
+        <ClientFilter />
+        <Grid container spacing={2} gridRow={"auto"}>
+        <Grid item container xs={12} spacing={3}>
           <Grid item xs={4}>
             <Button fullWidth>History</Button>
           </Grid>
