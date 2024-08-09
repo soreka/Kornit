@@ -1,90 +1,143 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    setRegions,
-    setMachineTypes,
-    setClientNames,
-    applyFilters,
-    resetFilters,
-    clearHistory,
-    loadFilters,
-    setFilteredResults
-} from '../../../redux/reducers/filterReducer';
-import { fetchFilteredData } from '../../../redux/apis/fetchFilteredDataApi';
-import { getUserIdFromToken } from '../../../redux/actions/authActions';
+import { fetchTemplatesData } from '../../../redux/actions/templateActions';
+import { fetchFilteredUserData } from '../../../redux/actions/filterAction';
+import { applyFilters, resetFilters, loadFilters, clearHistory, setSelectedFilters } from '../../../redux/reducers/filterReducer';
+import selectedDataStructure from '../../../redux/reducers/selectedDataStructure';
 
 
 const Filter = () => {
-    const userId = getUserIdFromToken(); // Ensure this gets the correct userId
+    const userId = "111111";/* getUserIdFromToken(); */ // Ensure this gets the correct userId
     const dispatch = useDispatch();
-    const userFilters = useSelector(state => state.filters.users[userId]?.currentFilters || {});
-    const { regions, machineTypes, clientNames, filterHistory } = useSelector(state => state.filters.users[userId] || {});
+    const [SelectedData, setSelectedData] = useState('');
+    const [selData, setSelData] = useState('');
+    const [filtersApplied, setFiltersApplied] = useState(false);
+
+    const filtersTemplates = useSelector((state) => state.templates);
+    const currentFilters = useSelector((state) => state.filters.users[userId]?.currentFilters || {});
+
+    const loadingfilterdData = useSelector((state) => state.filters.loading);
+    const errorfilterdData = useSelector((state) => state.filters.error);
+
+    const loadingTemplates = useSelector((state) => state.templates.loading);
+    const errorTemplates = useSelector((state) => state.templates.error);
+    /*     const state = useSelector((state) => state);*/
 
     useEffect(() => {
-        dispatch(loadFilters({ userId }));
-    }, [dispatch, userId]);
 
-    const handleRegionsChange = (e) => {
-        const options = Array.from(e.target.selectedOptions, option => option.value);
-        dispatch(setRegions({ userId, regions: options }));
-    };
+        checkTemplatesExpiration();
 
-    const handleMachineTypesChange = (e) => {
-        const options = Array.from(e.target.selectedOptions, option => option.value);
-        dispatch(setMachineTypes({ userId, machineTypes: options }));
-    };
+    }, [filtersTemplates]);
 
-    const handleClientNamesChange = (e) => {
-        const options = Array.from(e.target.selectedOptions, option => option.value);
-        dispatch(setClientNames({ userId, clientNames: options }));
-    };
-
-    const handleApply = async () => {
-        dispatch(applyFilters({ userId }));
-        fetchFilteredResults();
-    };
-
-    const fetchFilteredResults = async () => {
-        const filters = {
-            regions: userFilters.regions || [],
-            machineTypes: userFilters.machineTypes || [],
-            clientNames: userFilters.clientNames || []
+    useEffect(() => {
+        const applyFiltersAsync = async () => {
+            try {
+                await dispatch(applyFilters({ userId }));
+                setFiltersApplied(true);
+            } catch (error) {
+                console.error("Error applying filters:", error);
+            }
         };
-        try {
-            const data = await fetchFilteredData(filters);
-            dispatch(setFilteredResults({ userId, results: data }));
-        } catch (error) {
-            console.error('Failed to fetch filtered results:', error);
+        if (selData) {
+            applyFiltersAsync();
         }
+    }, [selData, dispatch, userId]);
+
+    useEffect(() => {
+        if (filtersApplied) {
+            dispatch(fetchFilteredUserData({ userId, filters: currentFilters }));
+            setFiltersApplied(false);
+        }
+    }, [filtersApplied, currentFilters, dispatch, userId]);
+
+    const checkTemplatesExpiration = () => {
+
+        if (!filtersTemplates) {
+            dispatch(fetchTemplatesData());
+        } else {
+
+            const savedTemplates = localStorage.getItem(`filterTemplates`);
+            if (!savedTemplates) dispatch(fetchTemplatesData());
+            try {
+                const item = JSON.parse(savedTemplates);
+                const now = new Date();
+                console.log("item.expiry", item.expiry);
+
+                if (now.getTime() - item.expiry >= (1000 * 60 * 60 * 24)) {
+                    // Item has expired
+                    localStorage.removeItem(`filterTemplates`);
+                    dispatch(fetchTemplatesData());
+                }
+            } catch (e) {
+                // Handle parsing error
+                console.error('Error retrieving item from localStorage', e);
+                return null;
+            }
+        };
+    }
+
+
+    const handleApplyFilter = (event) => {
+        event.preventDefault();
+        setSelData(' ');
+        // This will be handled in the useEffect
     };
 
-    const handleReset = () => {
-        dispatch(resetFilters({ userId }));
+    const handleSelectFilter = async (event) => {
+        event.preventDefault();
+        setSelectedData(selectedDataStructure.SelectedFilters);
+        dispatch(setSelectedFilters({ userId, SelectedFilters: selectedDataStructure.SelectedFilters }));
     };
 
-    const handleClearHistory = () => {
+    const handleClearHistory = async (event) => {
+        event.preventDefault();
         dispatch(clearHistory({ userId }));
     };
-
-    const handleCurrentFilterChange = (filterType, value) => {
-        switch (filterType) {
-            case 'regions':
-                dispatch(setRegions({ userId, regions: value.split(',') }));
-                break;
-            case 'machineTypes':
-                dispatch(setMachineTypes({ userId, machineTypes: value.split(',') }));
-                break;
-            case 'clientNames':
-                dispatch(setClientNames({ userId, clientNames: value.split(',') }));
-                break;
-            default:
-                break;
-        }
+    const handleLoadFilters = async (event) => {
+        event.preventDefault();
+        dispatch(loadFilters({ userId }));
+    };
+    const handleResetFilters = async (event) => {
+        event.preventDefault();
+        dispatch(resetFilters({ userId }));
+    };
+    const handleGetTemplates = async (event) => {
+        event.preventDefault();
+        dispatch(fetchTemplatesData());
     };
 
+
+
+
     return (
-        <div>
-        </div>
+        <>
+            <form onSubmit={handleGetTemplates}>
+                click to get templates for filters
+                <button type="submit" disabled={loadingTemplates}>
+                    {loadingTemplates ? 'waiting...' : 'get templates'}
+                </button>
+
+                {errorTemplates && <p>{errorTemplates.message}</p>}
+            </form>
+
+            <form onSubmit={handleSelectFilter}>
+                click to select filter
+                <button type="submit">
+                    {'Select'}
+                </button>
+
+                {errorfilterdData && <p>{errorfilterdData.message}</p>}
+            </form>
+            <form onSubmit={handleApplyFilter}>
+                click to Apply Filter
+                <button type="submit" disabled={loadingfilterdData}>
+                    {loadingfilterdData ? 'waiting...' : 'get filtered Data'}
+                </button>
+
+                {errorfilterdData && <p>{errorfilterdData.message}</p>}
+            </form>
+
+        </>
     );
 };
 

@@ -2,6 +2,7 @@
 import Login from './components/Auth/Login';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import Templates from './components/Home Page/Filters/Templates';
 import Filter from './components/Home Page/Filters/Filter';
 
 function App() {

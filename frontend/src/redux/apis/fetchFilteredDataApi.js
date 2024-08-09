@@ -1,36 +1,48 @@
-// src/api.js
+
 import axios from 'axios';
-import {
-  fetchFilteredDataStart,
-  fetchFilteredDatasSuccess,
-  fetchFilteredDataFailure
-} from '../reducers/filterReducer';
 
-const API_URL = 'https://localhost:3333/api/FetchData';
 
-export const fetchFilteredData = async (dispatch, filters) => {
-  dispatch(fetchFilteredDataStart());
-  try {
-    if (!filters) {
-      //need to get initial value
+const API_URL = 'http://localhost:5000/api/FetchData';
+
+const selectedAllData = {
+  "SelectedFilters": {
+    "regions": [{
+      "id": "region1",
+      "name": "All"
     }
-    //need to send the request with barer token
-    const fetchFilteredData = await axios.post(`${API_URL}/filtered-data`, filters);
-    dispatch(fetchFilteredDatasSuccess(fetchFilteredData.data.Regions));
-
-    return fetchFilteredData.data;
-  } catch (error) {
-    dispatch(fetchFilteredDataFailure(error.message));
-    console.error('Error fetching filtered data:', error);
-    throw error;
+    ],
+    "clientNames": [{
+      "id": "client1",
+      "name": "All"
+    }
+    ],
+    "machineTypes": [{
+      "id": "machineType1",
+      "name": "All"
+    }
+    ]
   }
 };
 
-
-
 export const fetchFilteredData1 = async (filters) => {
-  const response = await axios.post(`${API_URL}/filtered-data`, { filters });
-  return response.data;
+
+  try {
+
+    if (filters === "All") {
+      filters = selectedAllData.SelectedFilters;
+    }
+
+    const response = await axios.get('http://localhost:5000/api/FetchData', {
+      params: {
+        machines: filters.machineTypes,
+        regions: filters.regions,
+        clients: filters.clientNames
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Error fetching filtered data');
+  }
 };
 
 

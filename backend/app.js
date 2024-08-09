@@ -5,7 +5,7 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const app = express();
 
 // Connect to Database
-connectDB();
+//connectDB();
 
 // Init Middleware
 app.use(express.json());

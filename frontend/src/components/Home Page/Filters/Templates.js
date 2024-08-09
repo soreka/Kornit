@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchFilterTemplates } from '../../../redux/actions/templateActions';
+import { fetchTemplatesData } from '../../../redux/actions/templateActions';
 
-const TemplatesComponent = () => {
+const Templates = () => {
     const dispatch = useDispatch();
     const { regions, machineTypes, clientNames, loading, error } = useSelector((state) => state.templates);
 
     useEffect(() => {
-        dispatch(fetchFilterTemplates());
+        dispatch(fetchTemplatesData());
     }, [dispatch]);
 
     if (loading) return <p>Loading...</p>;
@@ -20,4 +20,4 @@ const TemplatesComponent = () => {
     );
 };
 
-export default TemplatesComponent;
+export default Templates;

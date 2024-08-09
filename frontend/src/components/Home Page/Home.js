@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilteredData } from '../../redux/apis/fetchDataApi';
 import { applyFilters, loadFilters } from '../../../redux/reducers/filterReducer';
 import { getUserIdFromToken } from '../../redux/actions/authActions';
+import { fetchFilteredUserData } from '../../redux/actions/filterAction';
+
 
 const HomePage = () => {
   const userId = getUserIdFromToken(); // Ensure this gets the correct userId
@@ -17,12 +19,7 @@ const HomePage = () => {
     const loadData = async () => {
       try {
         if (!filteredResults) {
-          // If no filteredResults, fetch data with currentFilters
-          const data = await fetchFilteredData(userFilters); // Send default data if `userFilters` is empty
-          dispatch(applyFilters({ userId, results: data }));
-        } else {
-          // Optionally, you can dispatch an action to load existing filters if needed
-          dispatch(loadFilters({ userId }));
+          dispatch(fetchFilteredUserData({ userId, filters: "All" }));// get all data per week
         }
       } catch (error) {
         setError('Failed to fetch filtered data.');
@@ -40,15 +37,15 @@ const HomePage = () => {
 
   return (
     <div>
-    <h1>Home Page</h1>
-    {filteredResults ? (
-      <>
-        
-      </>
-    ) : (
-      <p>No data available. Please apply filters to view results.</p>
-    )}
-  </div>
+      <h1>Home Page</h1>
+      {filteredResults ? (
+        <>
+
+        </>
+      ) : (
+        <p>No data available. Please apply filters to view results.</p>
+      )}
+    </div>
   );
 };
 
