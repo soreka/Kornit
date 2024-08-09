@@ -1,7 +1,22 @@
-const app = require('./app');
+const express = require('express');
+const { MongoClient } = require('mongodb');
+const dotenv = require('dotenv');
 
-const PORT = process.env.PORT || 5000;
+dotenv.config();
+
+const app = express();
+const PORT = 5000;
+
+
+const mongoURL = process.env.MONGO_URI;
+
+const mongoDB = new MongoClient(mongoURL);
+
+mongoDB.connect();
+
+const db = mongoDB.db('kornit-dev');
+
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+.clientFilter {
+    font-family: 'Rubik';
+    font-weight: 500;
+    width: 100%;
+    color: #354052;
+}
+
+.clientFilterInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filterCheckBox {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #DEDEE0;
+    width: 15px;
+    height: 15px;
+    border-radius: 5px;
+}
+
+.filterCheckBox:checked {
+    background-color: #2EA1F8;
+    border: none;
+}
+
+.clientFilterList {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid black;
+    background: white;
+    height: 250px;
+}
+
+.selectedClients {
+    border-left: 1px solid black;
+    width: 50%;
+    padding: 6px;
+    height: 96%;
+}
+
+.selectedClientsUtil, .client, .checkbox{
+    display: flex;
+    align-items: center;
+}
+
+.selectedClientsUtil{
+    margin-top: 9px !important;
+}
+
+
+.selectedClientsUtil> :first-child {
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.searchClientDiv {
+    outline: #C5D0DE;
+    border: 2px solid #C5D0DE;
+    border-radius: 8px;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    margin-top: 9px;
+}
+
+.searchClientDiv >:first-child{
+    margin-left: 3px;
+}
+
+.searchClient {
+    outline: none;
+    border: none;
+    font-family: 'Rubik';
+    font-weight: 600;
+    margin-left: 5px;
+    width: 95%;
+    color: #354052;
+}
+
+.clientsList{
+    padding: 6px;
+    width: 50%;
+    height: 100%;
+}
+
+.client{
+    font-size: 0.9rem;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.client > .filterCheckBox{
+    width: 13px;
+    height: 13px;   
+}

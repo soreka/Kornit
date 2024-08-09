@@ -1,0 +1,11 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 450px;
+  box-shadow: 1px 1px 1px black;
+  height: fit-content;
+  padding: 10px;
+}
