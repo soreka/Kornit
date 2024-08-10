@@ -5,56 +5,43 @@ import { useState } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png'
 import DataBox from '../components/DataBox';
 
-
-
 function DashBoard() {
-    const [clients, setClients] = useState(["mohamad", "Khaled", "Omran"]);
-    const [regions, setRegions] = useState(["All", "Israel", "USA", "France"]);
-    const [clickedDate, setClickedDate] = useState("Year");
+    const [client, setClient] = useState('Mohamad')
+    const [region, setRegion] = useState('USA')
+    const [clickedDate, setClickedDate] = useState("Year")
+
     const [expandedBoxId, setExpandedBoxId] = useState(null);
 
 
+const handleExpand = (boxId) => {
+    setExpandedBoxId(prevId => (prevId === boxId ? null : boxId));
+};
     const onDateChange = (date) => {
         setClickedDate(date);
     }
-
-    const handleExpand = (boxId) => {
-        setExpandedBoxId(prevId => (prevId === boxId ? null : boxId));
-    };
     return (
         <div className='dashboard'>
             <Grid container className='mt-0' spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={1.8} sm={4} md={6}>
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-demo"
-                        options={clients}
-                        renderInput={(params) => <TextField {...params} label="Client" />}
-                    />
+                    <TextField label="Client" className='dataFilter' disabled value={client} />
                 </Grid>
                 <Grid item xs={1.2} sm={2} md={3}>
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-demo"
-                        options={regions}
-                        renderInput={(params) => <TextField {...params} label="Region" />}
-                    />
+                    <TextField label="Region" className='dataFilter' disabled value={region} />
                 </Grid>
                 <Grid item xs={1} sm={2} md={3}>
-                    <TextField label={
-                        <span style={{ display: 'flex', alignItems: 'center' }}>
-                            Filter
-                            <img
-                                src={filterImg}
-                                alt="filter"
-                                style={{ paddingLeft: '8px', order: 999, width: '18px', height: '18px' }}
-                                className="myIcon"
-                            />
-                        </span>
-                    } disabled />
+                    <Button className='dataFilter filterBT' variant='outlined'><span style={{ display: 'flex', alignItems: 'center' }}>
+                        Filter
+                        <img
+                            src={filterImg}
+                            alt="filter"
+                            style={{ paddingLeft: '8px', order: 999, width: '18px', height: '18px' }}
+                            className="myIcon"
+                        />
+                    </span>
+                    </Button>
                 </Grid>
             </Grid>
-            <Grid container className='mt-0'>
+            <Grid container className='mt-0 datesBox'>
                 <div className='chooseDate'>
                     <Button variant="text" onClick={() => onDateChange("Year")}
                         className={clickedDate === "Year" ? "clickedDate" : ''}
@@ -68,6 +55,14 @@ function DashBoard() {
                     <Button variant="text" onClick={() => onDateChange("Custom")}
                         className={clickedDate === "Custom" ? "clickedDate" : ''}
                     >Custom</Button>
+                </div>
+                <div className='chooseWeek'>
+                    <div className='right-arrow' />
+                    <div className='currentWeek'>
+                        <Typography variant='p'>Week 29</Typography>
+                        <Typography variant='p'>10/07 - 14/07</Typography>
+                    </div>
+                    <div className='left-arrow' />
                 </div>
             </Grid >
             <Grid container className='mt-0'>
@@ -98,4 +93,4 @@ function DashBoard() {
     )
 }
 
-export default DashBoard
+export default DashBoard;

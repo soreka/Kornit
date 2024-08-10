@@ -159,3 +159,15 @@ body {
 .currentWeek > :first-child{
     margin-bottom: 10px;
 }
+
+.surveyType {
+    border-top: 1px solid black;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.question-box > Typography {
+    background-color: green;
+    
+}
