@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+.chart{
+    height: fit-content;
+    width: fit-content;
+    margin: auto auto !important;
+    background-color: white;
+    border-radius: 8px;
+    padding: 4px;
+    display: flex;
+    
+    
+}
+
+.line{
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    width: 3rem;
+}
+
+.line > div:nth-child(-n+4){
+    background: #FF4081;
+}
+
+.line > div:nth-child(n+5):nth-child(-n+7) {
+    background: #FFAC33;
+}
+
+.line > div:nth-child(n+8){
+    background: #49FF66;
+}
+
+.notFilled{
+    opacity: 0.2;
+}
+
+.data{
+    width: 45px;
+    height: 13px;
+    margin-top: 5px;
+    border-radius: 10px;
+}
+
+.lineTitle{
+    font-family: 'Rubik' !important;
+    font-size: 0.5rem;
+    font-weight: 600;
+}
