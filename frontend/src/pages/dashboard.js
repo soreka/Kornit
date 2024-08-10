@@ -1,5 +1,5 @@
 import '@fontsource/roboto/500.css';
-import { Box, Grid, Autocomplete, TextField, Button, Typography } from '@mui/material';
+import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert } from '@mui/material';
 import '../assets/styles/dashboard.css'
 import { useState } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png'
@@ -8,8 +8,16 @@ import { useNavigate } from "react-router-dom";
 
 function DashBoard() {
     const navigate = useNavigate();
+    const [chartData, setChartData] = useState([
+        {value:100, maxValue:200, minValue:0, Title:'performace'},
+        {value:50, maxValue:120, minValue:10, Title:'speed'},
+        {value:0, maxValue:100, minValue:0, Title:'time'},
+        {value:20, maxValue:100, minValue:0, Title:'delay'},
+        {value:70, maxValue:100, minValue:0, Title:'bugs'}
+    ]);
     const [client, setClient] = useState('Mohamad')
     const [region, setRegion] = useState('USA')
+    const [expanded, setExpanded]  = useState(false);
     const [clickedDate, setClickedDate] = useState("Year")
     const onDateChange = (date) => {
         setClickedDate(date);
@@ -65,7 +73,7 @@ function DashBoard() {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
-                    <DataBox dataType='Impression vs. target' mainDataValue='-16K' subDataValue='65%' boxType='Big' color='primary' />
+                    <DataBox dataType='Impression vs. target' mainDataValue='-16K' subDataValue='65%' boxType='Big' color='primary'  handleClick={() =>  setExpanded(!expanded)} isExpanded={expanded} data={chartData}/>
                     <DataBox dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' />
                     <DataBox dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' />
                     <DataBox dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' />
