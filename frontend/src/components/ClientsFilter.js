@@ -1,34 +1,27 @@
-import { useEffect, useRef, useState } from "react";
-import '../assets/styles/ClientFilter.css'
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import '../assets/styles/ClientFilter.css';
 import Client from "./Client";
 
-function ClientsFilter() {
-    const [clients, setClients] = useState([
-        { name: "mohamad", isSelected: false },
-        { name: "amazon", isSelected: false },
-        { name: "google", isSelected: false },
-        { name: "khaled", isSelected: false },
-        { name: "kholod", isSelected: false }
-    ])
-    const [searchedClients, setSearchedClients] = useState([])
+const ClientsFilter = React.memo(({ clients, setClients }) => {
+    const [searchedClients, setSearchedClients] = useState([]);
     const searchWord = useRef();
 
-    useEffect(() => {
+    useMemo(() => {
         setSearchedClients(clients.filter(client => !client.isSelected));
     }, [clients]);
 
-    const updateClientSelection = (name, isSelected) => {
+    const updateClientSelection = useCallback((name, isSelected) => {
         setClients(clients.map(client =>
             client.name === name ? { ...client, isSelected } : client
         ));
-    };
+    }, [clients, setClients]);
 
     const searchClients = () => {
         const lowerCase = searchWord.current.value.toLowerCase();
-        setSearchedClients(clients.filter(client => 
+        setSearchedClients(clients.filter(client =>
             client.name.toLowerCase().startsWith(lowerCase)
-        ))
-    }
+        ));
+    };
 
     return (
         <div className="clientFilter">
@@ -89,7 +82,7 @@ function ClientsFilter() {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+});
 
 export default ClientsFilter;

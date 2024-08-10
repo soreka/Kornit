@@ -6,12 +6,13 @@ import "./assets/styles/global.css";
 import Filters from "./pages/Filters";
 
 function App() {
+  const [filter, setFilter] = useState({})
   return (
     <>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashBoard" element={<DashBoard />} />
-        <Route path="/filter" element={<Filters />} />
+        <Route path="/dashBoard" element={<DashBoard filter={filter} />} />
+        <Route path="/filter" element={<Filters setFilter={setFilter} />} />
       </Routes>
     </>
   );
