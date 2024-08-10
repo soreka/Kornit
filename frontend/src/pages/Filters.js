@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Link } from "react-router-dom";
 import "../../src/assets/styles/filter.css";
 import Search from "../components/Search";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
+import apiClient from "./apiClient";
+
 export default function Filters() {
   const [value, setValue] = React.useState([]);
+  const [filters, setFilters] = useState([]);
+  
   const discard = () => {
     setValue([]);
   };
+
   const apply = () => {
     console.log(value);
   };
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const response = await apiClient.get("/filters");
+        setFilters(response.data);
+      } catch (error) {
+        console.error("Error fetching filters:", error);
+      }
+    };
+    fetchFilters();
+  }, []);
+
   return (
     <>
       <nav
@@ -60,6 +78,20 @@ export default function Filters() {
           </Grid>
         </Grid>
       </Grid>
+
+
+      <div style={{ marginTop: '20px' }}>
+        <Typography variant="h6">Filters Data:</Typography>
+        {filters.length > 0 ? (
+          <ul>
+            {filters.map((filter, index) => (
+              <li key={index}>{JSON.stringify(filter)}</li>
+            ))}
+          </ul>
+        ) : (
+          <Typography variant="body1">No filters available</Typography>
+        )}
+      </div>
     </>
   );
 }

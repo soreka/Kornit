@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
@@ -22,9 +23,13 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
+
 UserSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
+    console.log('Comparing passwords...');
+    const isMatch = await bcrypt.compare(enteredPassword, this.password);
+    console.log('Password match result:', isMatch);
+    return isMatch;
+  };
 
 const User = mongoose.model('User', UserSchema);
 

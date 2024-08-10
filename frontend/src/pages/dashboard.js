@@ -1,17 +1,34 @@
 import '@fontsource/roboto/500.css';
-import { Box, Grid, Autocomplete, TextField, Button, Typography } from '@mui/material';
-import '../assets/styles/dashboard.css'
-import { useState } from 'react';
-import filterImg from '../assets/images/dashboard/filter.png'
+import { Box, Grid, TextField, Button, Typography } from '@mui/material';
+import '../assets/styles/dashboard.css';
+import { useState, useEffect } from 'react';
+import filterImg from '../assets/images/dashboard/filter.png';
 import DataBox from '../components/DataBox';
+import apiClient from './apiClient';
 
 function DashBoard() {
-    const [client, setClient] = useState('Mohamad')
-    const [region, setRegion] = useState('USA')
-    const [clickedDate, setClickedDate] = useState("Year")
+    const [client, setClient] = useState('Mohamad');
+    const [region, setRegion] = useState('USA');
+    const [clickedDate, setClickedDate] = useState("Year");
+    const [dashboardData, setDashboardData] = useState(null);
+
     const onDateChange = (date) => {
         setClickedDate(date);
-    }
+    };
+
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const response = await apiClient.get('/dashboard-data');
+                setDashboardData(response.data.data); 
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
     return (
         <div className='dashboard'>
             <Grid container className='mt-0' spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -63,6 +80,7 @@ function DashBoard() {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
+
                     <DataBox dataType='Impression vs. target' mainDataValue='-16K' subDataValue='65%' boxType='Big' color='primary' />
                     <DataBox dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' />
                     <DataBox dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' />
@@ -70,8 +88,13 @@ function DashBoard() {
                     <DataBox dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other' />
                 </Grid>
             </Grid>
+
+
+            <div className="server-message">
+                <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography>
+            </div>
         </div >
     )
 }
 
-export default DashBoard
+export default DashBoard;
