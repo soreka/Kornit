@@ -79,7 +79,7 @@ function QuestionBox({ question, percentage, content, boxId, expandedBoxId, hand
                 cursor: 'pointer',
                 height: isExpanded ? 'auto' : '45px',
                 overflow: 'hidden',
-                marginBottom: '10px', // Add space below each box
+                marginBottom: '10px', 
             }}
         >
             <Grid 

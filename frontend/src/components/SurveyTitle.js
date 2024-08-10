@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import NonResponderCard from './NonResponderCard'; // Import the NonResponderCard component
-import QuestionBox from './QuestionBox'; // Import the QuestionBox component
+import NonResponderCard from './NonResponderCard'; 
+import QuestionBox from './QuestionBox'; 
 
 const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonResponders }) => {
-    const [activeComponent, setActiveComponent] = useState(null); // Track which component to display
+    const [activeComponent, setActiveComponent] = useState(null); 
     const [expandedBoxId, setExpandedBoxId] = useState(null);
 
     const handleButtonClick = (e, component) => {
-        e.stopPropagation(); // Prevent the event from reaching the parent component
-        setActiveComponent(prev => (prev === component ? null : component)); // Toggle the display of components
+        e.stopPropagation(); 
+        setActiveComponent(prev => (prev === component ? null : component)); 
     };
 
     const handleExpand = (boxId) => {
@@ -33,8 +33,8 @@ const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonRespond
                                 padding: 0,
                                 minWidth: 'auto',
                                 mr: 2,
-                                border: 'none', // Remove border
-                                backgroundColor: 'transparent' // Ensure background is transparent
+                                border: 'none', 
+                                backgroundColor: 'transparent'
                             }}
                         >
                             Non-responders
@@ -47,8 +47,8 @@ const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonRespond
                                 fontSize: 'small',
                                 padding: 0,
                                 minWidth: 'auto',
-                                border: 'none', // Remove border
-                                backgroundColor: 'transparent' // Ensure background is transparent
+                                border: 'none', 
+                                backgroundColor: 'transparent' 
                             }}
                         >
                             Questions

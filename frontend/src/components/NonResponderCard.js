@@ -5,7 +5,7 @@ const NonResponderCard = ({ name , email , phone_number , mobile_phone_number })
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleRemindClick = (event) => {
-        event.stopPropagation(); // Prevent event bubbling that might cause unintended behavior
+        event.stopPropagation();
         setAnchorEl(event.currentTarget);
     };
 
