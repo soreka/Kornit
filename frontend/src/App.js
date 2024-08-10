@@ -1,17 +1,23 @@
-import { useState } from "react";
-import DashBoard from "./pages/dashboard";
-import Login from "./components/Login";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import "./assets/styles/global.css";
+import Dashboard from "./pages/dashboard";
+import Login from "./components/Login";
+import ProtectedRoute from "./pages/ProtectedRoute";
 import Filters from "./pages/Filters";
+import "./assets/styles/global.css";
 
 function App() {
+
+
   return (
     <>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashBoard" element={<DashBoard />} />
-        <Route path="/filter" element={<Filters />} />
+        <Route
+          path="/dashboard"
+          element={<ProtectedRoute element={Dashboard} />}
+        />
+        <Route path="/filter" element={<ProtectedRoute element={Filters} />}/>
       </Routes>
     </>
   );
