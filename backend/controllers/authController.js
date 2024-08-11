@@ -21,12 +21,12 @@ exports.login = async (req, res) => {
 
     console.log('Generating token...');
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1m',
+      expiresIn: '1d',
     });
     console.log('Token generated:', token);
 
     console.log('Login successful');
-    res.json({ token }); 
+    res.json({ token });
   } catch (error) {
     console.error('Server error:', error.message);
     res.status(500).send('Server error');

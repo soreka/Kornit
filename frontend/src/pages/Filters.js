@@ -5,10 +5,9 @@ import "../../src/assets/styles/filter.css";
 import Search from "../components/Search";
 import { Button, Grid, Typography } from "@mui/material";
 import ClientFilter from '../components/ClientsFilter'
-import { useNavigate } from "react-router-dom";
 import apiClient from "./apiClient";
 
-export default function Filters({ setFilter }) {
+export default function Filters({ setFilter, filter }) {
   const navigate = useNavigate();
 
 
@@ -37,7 +36,7 @@ export default function Filters({ setFilter }) {
     const fetchFilters = async () => {
       try {
         const response = await apiClient.get("/filters");
-        setFilters(response.data);
+        setFilter(response.data);
       } catch (error) {
         console.error("Error fetching filters:", error);
       }
@@ -104,9 +103,9 @@ export default function Filters({ setFilter }) {
 
       <div style={{ marginTop: '20px' }}>
         <Typography variant="h6">Filters Data:</Typography>
-        {filters.length > 0 ? (
+        {filter.length > 0 ? (
           <ul>
-            {filters.map((filter, index) => (
+            {filter.map((filter, index) => (
               <li key={index}>{JSON.stringify(filter)}</li>
             ))}
           </ul>
