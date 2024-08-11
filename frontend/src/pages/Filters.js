@@ -6,8 +6,8 @@ import Search from "../components/Search";
 import { Button, Grid, Typography, Box, Checkbox, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import PrintIcon from '@mui/icons-material/Print';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useNavigate } from "react-router-dom";
 import ClientFilter from '../components/ClientsFilter';
+import apiClient from './apiClient'
 
 export default function Filters({ setFilter, filter }) {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Filters({ setFilter, filter }) {
   // State for checkboxes in the left and right containers
   const [checkedLeft, setCheckedLeft] = React.useState(Array(6).fill(false));
   const [checkedRight, setCheckedRight] = React.useState(Array(6).fill(false));
-   const [valueC, setValueC] = React.useState([
+  const [valueC, setValueC] = React.useState([
     { name: "mohamad", isSelected: false },
     { name: "amazon", isSelected: false },
     { name: "google", isSelected: false },
@@ -24,7 +24,7 @@ export default function Filters({ setFilter, filter }) {
     { name: "kholod", isSelected: false }
   ]);
   const [valueS, setValueS] = React.useState([]);
-  
+
   // Lists of items for left and right containers
   const leftItems = [
     "Atlas MAX",
@@ -94,7 +94,7 @@ export default function Filters({ setFilter, filter }) {
         </Grid>
       </Grid>
 
-            <ClientFilter clients={valueC} setClients={setValueC} />
+      <ClientFilter clients={valueC} setClients={setValueC} />
       <Grid container spacing={2} gridRow={"auto"} sx={{ padding: "20px" }}>
         <Grid item xs={12}>
           <Typography variant="h6" style={{ marginBottom: "20px" }}>
@@ -109,19 +109,19 @@ export default function Filters({ setFilter, filter }) {
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <PrintIcon fontSize="small" sx={{ color: '#354052' }} />
                         <SettingsIcon fontSize="small" sx={{ color: '#354052', marginLeft: "-8px" }} />
-                        <ListItemText 
-                          primary={item} 
-                          sx={{ 
-                            margin: 0, 
-                            padding: 0, 
-                            whiteSpace: 'nowrap', 
-                            overflow: 'hidden', 
+                        <ListItemText
+                          primary={item}
+                          sx={{
+                            margin: 0,
+                            padding: 0,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            fontSize: '0.95rem', 
+                            fontSize: '0.95rem',
                             marginLeft: "8px",
                             color: '#354052',
-                            fontWeight: '900', 
-                          }} 
+                            fontWeight: '900',
+                          }}
                         />
                       </Box>
                       <Checkbox
@@ -148,19 +148,19 @@ export default function Filters({ setFilter, filter }) {
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <PrintIcon fontSize="small" sx={{ color: '#354052' }} />
                         <SettingsIcon fontSize="small" sx={{ color: '#354052', marginLeft: "-8px" }} />
-                        <ListItemText 
-                          primary={item} 
-                          sx={{ 
-                            margin: 0, 
-                            padding: 0, 
-                            whiteSpace: 'nowrap', 
-                            overflow: 'hidden', 
+                        <ListItemText
+                          primary={item}
+                          sx={{
+                            margin: 0,
+                            padding: 0,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            fontSize: '0.95rem', 
+                            fontSize: '0.95rem',
                             marginLeft: "8px",
                             color: '#354052',
                             fontWeight: '900', // Increased font weight to make the text thicker
-                          }} 
+                          }}
                         />
                       </Box>
                       <Checkbox
@@ -212,7 +212,7 @@ export default function Filters({ setFilter, filter }) {
         </Grid>
       </Grid>
 
-// what is this ? style tag injection maybe 
+// what is this ? style tag injection maybe
       <style jsx global>{`
         /* Custom Scrollbar Styling */
         ::-webkit-scrollbar {

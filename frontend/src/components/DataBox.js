@@ -94,7 +94,7 @@
 //                         sx={{
 //                             maxHeight: '200px', 
 //                             overflowY: 'auto', 
-             
+
 //                         }}
 //                     >
 
@@ -106,8 +106,8 @@
 //                             onClick={(e) => handleSurveyTypeClick(e, 'CFI')}
 //                             questions={mockQuestions}
 //                             nonResponders={mockNonResponders}
-                            
-   
+
+
 //                         />
 //                         <SurveyTitle
 //                             title='Service Call'
@@ -157,6 +157,7 @@ import { useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import SurveyTitle from './SurveyTitle';
 import SurveyQuestions from './SurveyQuestions';
+import Chart from './Chart'
 
 const DataBox = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, color, isExpanded, onExpand }) => {
     const initialSizes = boxType === 'Big' ? { xs: 4, sm: 8, md: 8 } : { xs: 2, sm: 4, md: 4 };
@@ -165,7 +166,7 @@ const DataBox = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, 
     const boxSizes = isExpanded ? expandedSizes : initialSizes;
     const boxHeight = isExpanded ? '300px' : 'auto';
     const [expandedSurveyType, setExpandedSurveyType] = useState(null);
-
+    const [data, setData] = useState([])
     const handleSurveyTypeClick = (e, surveyType) => {
         e.stopPropagation();
         setExpandedSurveyType(prev => prev === surveyType ? null : surveyType);
@@ -188,7 +189,7 @@ const DataBox = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, 
                 className="dataBox"
                 sx={{
                     bgcolor: color === 'primary' ? '#FFAB2B' :
-                            color === 'secondary' ? '#1BB934' :
+                        color === 'secondary' ? '#1BB934' :
                             '#FF4081',
                     height: isExpanded ? '325px' : '150px',
                     transition: 'height 0.3s ease',
