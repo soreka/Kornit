@@ -48,6 +48,7 @@ body {
         0 16px 16px hsl(0deg 0% 0% / 0.075);
     padding: 5px;
     height: 9rem;
+    transition: 0.25s;
 }
 
 .dataBox>.MuiTypography-root,
@@ -159,3 +160,61 @@ body {
 .currentWeek > :first-child{
     margin-bottom: 10px;
 }
+
+
+.surveyType {
+    border-top: 1px solid black;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.question-box > Typography {
+    background-color: green;
+    
+}
+
+.expanded{
+    height: 18rem !important;
+}
+
+.expanded > .dataValue{
+    display: none;
+}
+
+.expanded > .dataType{
+    display: none;
+}
+
+.expandedInfo{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 5px;
+    font-family: 'Rubik' !important;
+    font-weight: 800 !important;
+    color: #354052 !important;
+}
+
+.expandedInfo > :first-child{
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.expandedInfo > :last-child{
+    transition: 1s;
+    font-family: 'Rubik' !important;
+    font-weight: 800 !important;
+    font-size: 2.5rem !important;
+}
+
+.expanded > .dataTarget{
+    margin-top: auto;
+}
+
+@media only screen and (max-width: 400px) {
+    .chooseDate > *{
+        font-size:  0.75rem !important;
+    }
+}
+

@@ -3,8 +3,11 @@
 .clientFilter {
     font-family: 'Rubik';
     font-weight: 500;
-    width: 100%;
+    width: 95%;
     color: #354052;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .clientFilterInfo {

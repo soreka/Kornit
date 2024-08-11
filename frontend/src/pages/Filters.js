@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../src/assets/styles/filter.css";
 import Search from "../components/Search";
 import { Button, Grid, Typography, Box, Checkbox, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
@@ -9,14 +9,22 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from "react-router-dom";
 import ClientFilter from '../components/ClientsFilter';
 
-export default function Filters() {
+export default function Filters({ setFilter, filter }) {
   const navigate = useNavigate();
   const [value, setValue] = React.useState([]);
 
   // State for checkboxes in the left and right containers
   const [checkedLeft, setCheckedLeft] = React.useState(Array(6).fill(false));
   const [checkedRight, setCheckedRight] = React.useState(Array(6).fill(false));
-
+   const [valueC, setValueC] = React.useState([
+    { name: "mohamad", isSelected: false },
+    { name: "amazon", isSelected: false },
+    { name: "google", isSelected: false },
+    { name: "khaled", isSelected: false },
+    { name: "kholod", isSelected: false }
+  ]);
+  const [valueS, setValueS] = React.useState([]);
+  
   // Lists of items for left and right containers
   const leftItems = [
     "Atlas MAX",
@@ -37,11 +45,29 @@ export default function Filters() {
   ];
 
   const discard = () => {
-    setValue([]);
+    setValueS([]);
   };
+
   const apply = () => {
-    console.log(value);
+    setFilter({
+      valueS,
+      valueC
+    })
+
   };
+
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const response = await apiClient.get("/filters");
+        setFilter(response.data);
+      } catch (error) {
+        console.error("Error fetching filters:", error);
+      }
+    };
+    fetchFilters();
+  }, []);
 
   return (
     <>
@@ -55,7 +81,7 @@ export default function Filters() {
           alignContent: "center",
         }}
       >
-        <Link to='dashboard' onClick={(e) =>{
+        <Link to='dashboard' onClick={(e) => {
           e.preventDefault();
           navigate('/dashboard');
         }}>
@@ -64,10 +90,11 @@ export default function Filters() {
       </nav>
       <Grid container spacing={2} gridRow={"auto"}>
         <Grid item xs={12}>
-          <Search value={value} setValue={setValue} />
+          <Search value={valueS} setValue={setValueS} />
         </Grid>
       </Grid>
-      <ClientFilter />
+
+            <ClientFilter clients={valueC} setClients={setValueC} />
       <Grid container spacing={2} gridRow={"auto"} sx={{ padding: "20px" }}>
         <Grid item xs={12}>
           <Typography variant="h6" style={{ marginBottom: "20px" }}>
@@ -185,7 +212,7 @@ export default function Filters() {
         </Grid>
       </Grid>
 
-      {/* Custom Scrollbar Styles */}
+// what is this ? style tag injection maybe 
       <style jsx global>{`
         /* Custom Scrollbar Styling */
         ::-webkit-scrollbar {
@@ -202,6 +229,21 @@ export default function Filters() {
           background: #555;
         }
       `}</style>
+
+
+      <div style={{ marginTop: '20px' }}>
+        <Typography variant="h6">Filters Data:</Typography>
+        {filter.length > 0 ? (
+          <ul>
+            {filter.map((filter, index) => (
+              <li key={index}>{JSON.stringify(filter)}</li>
+            ))}
+          </ul>
+        ) : (
+          <Typography variant="body1">No filters available</Typography>
+        )}
+      </div>
+
     </>
   );
 }
