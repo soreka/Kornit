@@ -1,10 +1,11 @@
 import '@fontsource/roboto/500.css';
 import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert } from '@mui/material';
 import '../assets/styles/dashboard.css'
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png'
 import DataBox from '../components/DataBox';
 import { useNavigate } from "react-router-dom";
+import apiClient from './apiClient';
 
 function DashBoard({ filter }) {
     useMemo(() => {
@@ -23,9 +24,25 @@ function DashBoard({ filter }) {
     const [region, setRegion] = useState('USA')
     const [expanded, setExpanded] = useState(false);
     const [clickedDate, setClickedDate] = useState("Year")
+    const [dashboardData, setDashboardData] = useState(null);
+
     const onDateChange = (date) => {
         setClickedDate(date);
-    }
+    };
+
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const response = await apiClient.get('/dashboard-data');
+                setDashboardData(response.data.data); 
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
     return (
         <div className='dashboard'>
             <Grid container className='mt-0' spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -84,8 +101,13 @@ function DashBoard({ filter }) {
                     <DataBox dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other' />
                 </Grid>
             </Grid>
+
+
+            <div className="server-message">
+                <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography>
+            </div>
         </div >
     )
 }
 
-export default DashBoard
+export default DashBoard;

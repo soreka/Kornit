@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Link, useNavigate } from "react-router-dom";
 import "../../src/assets/styles/filter.css";
 import Search from "../components/Search";
-import { Button, Grid } from "@mui/material";
-import ClientFilter from '../components/ClientsFilter';
+import { Button, Grid, Typography } from "@mui/material";
+import ClientFilter from '../components/ClientsFilter'
+import { useNavigate } from "react-router-dom";
+import apiClient from "./apiClient";
 
 export default function Filters({ setFilter }) {
   const navigate = useNavigate();
+
 
   const [valueC, setValueC] = React.useState([
     { name: "mohamad", isSelected: false },
@@ -29,6 +32,19 @@ export default function Filters({ setFilter }) {
     })
 
   };
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const response = await apiClient.get("/filters");
+        setFilters(response.data);
+      } catch (error) {
+        console.error("Error fetching filters:", error);
+      }
+    };
+    fetchFilters();
+  }, []);
+
 
   return (
     <>
@@ -84,6 +100,20 @@ export default function Filters({ setFilter }) {
           </Grid>
         </Grid>
       </Grid>
+
+
+      <div style={{ marginTop: '20px' }}>
+        <Typography variant="h6">Filters Data:</Typography>
+        {filters.length > 0 ? (
+          <ul>
+            {filters.map((filter, index) => (
+              <li key={index}>{JSON.stringify(filter)}</li>
+            ))}
+          </ul>
+        ) : (
+          <Typography variant="body1">No filters available</Typography>
+        )}
+      </div>
     </>
   );
 }

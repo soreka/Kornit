@@ -1,9 +1,10 @@
-import { useState } from "react";
-import DashBoard from "./pages/dashboard";
-import Login from "./components/Login";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import "./assets/styles/global.css";
+import Dashboard from "./pages/dashboard";
+import Login from "./components/Login";
+import ProtectedRoute from "./pages/ProtectedRoute";
 import Filters from "./pages/Filters";
+import "./assets/styles/global.css";
 
 function App() {
   const [filter, setFilter] = useState({})
@@ -11,8 +12,11 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashBoard" element={<DashBoard filter={filter} />} />
-        <Route path="/filter" element={<Filters setFilter={setFilter} />} />
+        <Route
+          path="/dashboard"
+          element={<ProtectedRoute element={<DashBoard filter={filter} />} />}
+        />
+        <Route path="/filter" element={<ProtectedRoute element={<Filters setFilter={setFilter} />} />}/>
       </Routes>
     </>
   );

@@ -14,3 +14,5 @@ html {
 #root {
   height: 100%;
 }
+
+iframe#webpack-dev-server-client-overlay{display:none!important}
