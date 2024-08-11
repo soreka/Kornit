@@ -5,80 +5,81 @@
     height: 100vh;
 }
 
-.kornitImage{
-    max-width:90%;
-    max-height:90%;
+.kornitImage {
+    max-width: 90%;
+    max-height: 90%;
     margin: auto;
 }
 
-.image-container{
+.image-container {
     display: flex;
 }
 
 .login-form {
-background: white;
-padding: 2rem;
-width: 100%;
-max-width: 400px;
-box-sizing: border-box;
+    background: white;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
 }
 
 .login-form h2 {
-margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-.wrong-note{
+.wrong-note {
     color: red;
     margin-top: 0.3rem;
 }
 
-.input-container{
+.input-container {
     position: relative;
     height: 30px;
 }
 
-.input-container img{
+.input-container img {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     right: 0;
 }
 
-.inputIcon{
-    max-width:80%;
-    max-height:80%;
+.inputIcon {
+    max-width: 80%;
+    max-height: 80%;
 }
 
 .input-group {
-margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .input-group label {
-display: block;
-margin-bottom: 0.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 .input-group input {
-width: 100%;
-padding: 0.5rem;
-border: 1px solid #ccc;
-border-radius: 10px;
-background-color: rgb(223, 223, 223);
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: rgb(223, 223, 223);
 }
 
 .login-container button {
-padding: 0.5rem 1.25rem 0.5rem 1.25rem;
-border: none;
-border-radius: 10px;
-background-color: rgb(189, 189, 189);
-color: black;
-font-size: 1rem;
-font-weight: bold;
-cursor: pointer;
+    padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(189, 189, 189);
+    color: black;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
 }
 
 .login-container button:hover {
-background-color: rgb(227, 226, 226);
+    background-color: rgb(227, 226, 226);
 }
 
 @media (min-width: 600px) {
@@ -93,23 +94,24 @@ background-color: rgb(227, 226, 226);
 
 /* Responsive styles */
 @media (max-width: 600px) {
-.login-container {
-    background-image: url('../assets/background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center bottom 10%;
-}
-.login-form {
-    padding: 1.5rem;
-}
+    .login-container {
+        background-image: url('../assets/background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center bottom 10%;
+    }
 
-.input-group label,
-.input-group input {
-    font-size: 0.9rem;
-}
+    .login-form {
+        padding: 1.5rem;
+    }
 
-button {
-    font-size: 0.9rem;
-    padding: 0.5rem;
-}
+    .input-group label,
+    .input-group input {
+        font-size: 0.9rem;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
 }
