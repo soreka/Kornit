@@ -75,7 +75,7 @@ function DashBoard({ filter }) {
                     </Button>
                 </Grid>
             </Grid>
-            <Grid container className='mt-0 datesBox'>
+            <Grid container className='mt-0 datesBox' >
                 <div className='chooseDate'>
                     <Button variant="text" onClick={() => onDateChange("Week")}
                         className={clickedDate === "Week" ? "clickedDate" : ''}
