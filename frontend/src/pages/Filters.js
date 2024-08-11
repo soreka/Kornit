@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../src/assets/styles/filter.css";
 import Search from "../components/Search";
 import { Button, Grid, Typography } from "@mui/material";
@@ -8,18 +8,29 @@ import ClientFilter from '../components/ClientsFilter'
 import { useNavigate } from "react-router-dom";
 import apiClient from "./apiClient";
 
-
-export default function Filters() {
+export default function Filters({ setFilter }) {
   const navigate = useNavigate();
-  const [value, setValue] = React.useState([]);
-  const [filters, setFilters] = useState([]);
-  
+
+
+  const [valueC, setValueC] = React.useState([
+    { name: "mohamad", isSelected: false },
+    { name: "amazon", isSelected: false },
+    { name: "google", isSelected: false },
+    { name: "khaled", isSelected: false },
+    { name: "kholod", isSelected: false }
+  ]);
+  const [valueS, setValueS] = React.useState([]);
+
   const discard = () => {
-    setValue([]);
+    setValueS([]);
   };
 
   const apply = () => {
-    console.log(value);
+    setFilter({
+      valueS,
+      valueC
+    })
+
   };
 
   useEffect(() => {
@@ -34,6 +45,7 @@ export default function Filters() {
     fetchFilters();
   }, []);
 
+
   return (
     <>
       <nav
@@ -46,20 +58,20 @@ export default function Filters() {
           alignContent: "center",
         }}
       >
-        <Link to='dashboard' onClick={(e) =>{
+        <Link to='dashboard' onClick={(e) => {
           e.preventDefault();
-          navigate('/dashboard')
-        } }>
+          navigate('/dashboard');
+        }}>
           <ArrowBackIosIcon />
         </Link>
       </nav>
       <Grid container spacing={2} gridRow={"auto"}>
         <Grid item xs={12}>
-          <Search value={value} setValue={setValue} />
+          <Search value={valueS} setValue={setValueS} />
         </Grid>
-        </Grid>
-        <ClientFilter />
-        <Grid container spacing={2} gridRow={"auto"}>
+      </Grid>
+      <ClientFilter clients={valueC} setClients={setValueC} />
+      <Grid container spacing={2} gridRow={"auto"}>
         <Grid item container xs={12} spacing={3}>
           <Grid item xs={4}>
             <Button fullWidth>History</Button>
@@ -72,14 +84,14 @@ export default function Filters() {
             style={{ display: "flex" }}
           >
             <Button
-              style={{ width: "48% " }}
+              style={{ width: "48%" }}
               variant="outlined"
               onClick={discard}
             >
               Discard
             </Button>
             <Button
-              style={{ width: "48% " }}
+              style={{ width: "48%" }}
               variant="contained"
               onClick={apply}
             >

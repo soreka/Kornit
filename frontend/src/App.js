@@ -7,17 +7,16 @@ import Filters from "./pages/Filters";
 import "./assets/styles/global.css";
 
 function App() {
-
-
+  const [filter, setFilter] = useState({})
   return (
     <>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route
           path="/dashboard"
-          element={<ProtectedRoute element={Dashboard} />}
+          element={<ProtectedRoute element={<DashBoard filter={filter} />} />}
         />
-        <Route path="/filter" element={<ProtectedRoute element={Filters} />}/>
+        <Route path="/filter" element={<ProtectedRoute element={<Filters setFilter={setFilter} />} />}/>
       </Routes>
     </>
   );
