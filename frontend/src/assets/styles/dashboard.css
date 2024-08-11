@@ -161,6 +161,19 @@ body {
     margin-bottom: 10px;
 }
 
+
+.surveyType {
+    border-top: 1px solid black;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.question-box > Typography {
+    background-color: green;
+    
+}
+
 .expanded{
     height: 18rem !important;
 }
@@ -204,3 +217,4 @@ body {
         font-size:  0.75rem !important;
     }
 }
+
