@@ -30,9 +30,9 @@ function DashBoard({ filter }) {
     const [expandedBoxId, setExpandedBoxId] = useState(null);
 
 
-const handleExpand = (boxId) => {
-    setExpandedBoxId(prevId => (prevId === boxId ? null : boxId));
-};
+    const handleExpand = (boxId) => {
+        setExpandedBoxId(prevId => (prevId === boxId ? null : boxId));
+    };
 
     const [dashboardData, setDashboardData] = useState(null);
 
@@ -44,7 +44,7 @@ const handleExpand = (boxId) => {
         const fetchDashboardData = async () => {
             try {
                 const response = await apiClient.get('/dashboard-data');
-                setDashboardData(response.data.data); 
+                setDashboardData(response.data.data);
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
             }
@@ -77,15 +77,15 @@ const handleExpand = (boxId) => {
             </Grid>
             <Grid container className='mt-0 datesBox'>
                 <div className='chooseDate'>
-                    <Button variant="text" onClick={() => onDateChange("Year")}
-                        className={clickedDate === "Year" ? "clickedDate" : ''}
-                    >Year to date</Button>
-                    <Button variant="text" onClick={() => onDateChange("Month")}
-                        className={clickedDate === "Month" ? "clickedDate" : ''}
-                    >Month</Button>
                     <Button variant="text" onClick={() => onDateChange("Week")}
                         className={clickedDate === "Week" ? "clickedDate" : ''}
                     >Last Week</Button>
+                    <Button variant="text" onClick={() => onDateChange("Month")}
+                        className={clickedDate === "Month" ? "clickedDate" : ''}
+                    >Last Month</Button>
+                    <Button variant="text" onClick={() => onDateChange("Year")}
+                        className={clickedDate === "Year" ? "clickedDate" : ''}
+                    >Year to date</Button>
                     <Button variant="text" onClick={() => onDateChange("Custom")}
                         className={clickedDate === "Custom" ? "clickedDate" : ''}
                     >Custom</Button>
@@ -104,23 +104,23 @@ const handleExpand = (boxId) => {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
-                    
+
                     <DataBox dataType='Impression vs. target'
-                     mainDataValue='-16K' 
-                     subDataValue='65%'
-                      boxType='Big' 
-                      color='primary'
-                    isExpanded={expandedBoxId === 1}
-                    onExpand={() => handleExpand(1)}/>
-           
+                        mainDataValue='-16K'
+                        subDataValue='65%'
+                        boxType='Big'
+                        color='primary'
+                        isExpanded={expandedBoxId === 1}
+                        onExpand={() => handleExpand(1)} />
+
                     <DataBox dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' isExpanded={expandedBoxId === 2}
-                        onExpand={() => handleExpand(2)}/>
+                        onExpand={() => handleExpand(2)} />
                     <DataBox dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' isExpanded={expandedBoxId === 3}
-                        onExpand={() => handleExpand(3)}/>
+                        onExpand={() => handleExpand(3)} />
                     <DataBox dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' isExpanded={expandedBoxId === 4}
-                        onExpand={() => handleExpand(4)}/>
-                    <DataBox dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other'  isExpanded={expandedBoxId === 5}
-                        onExpand={() => handleExpand(5)}/>
+                        onExpand={() => handleExpand(4)} />
+                    <DataBox dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other' isExpanded={expandedBoxId === 5}
+                        onExpand={() => handleExpand(5)} />
                 </Grid>
             </Grid>
 
