@@ -3,7 +3,8 @@ import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert } from '@
 import '../assets/styles/dashboard.css'
 import { useMemo, useState, useEffect } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png'
-import DataBox from '../components/DataBox';
+import DataBoxSurvey from '../components/DataBoxSurvey';
+import DataBoxPerformance from '../components/DataBoxPerformance';
 
 import { useNavigate } from "react-router-dom";
 import apiClient from './apiClient';
@@ -105,7 +106,7 @@ function DashBoard({ filter }) {
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
 
-                    <DataBox dataType='Impression vs. target'
+                    <DataBoxSurvey dataType='Impression vs. target'
                         mainDataValue='-16K'
                         subDataValue='65%'
                         boxType='Big'
@@ -113,17 +114,28 @@ function DashBoard({ filter }) {
                         isExpanded={expandedBoxId === 1}
                         onExpand={() => handleExpand(1)} />
 
-                    <DataBox dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' isExpanded={expandedBoxId === 2}
+                    <DataBoxSurvey dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' isExpanded={expandedBoxId === 2}
                         onExpand={() => handleExpand(2)} />
-                    <DataBox dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' isExpanded={expandedBoxId === 3}
+                    <DataBoxSurvey dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' isExpanded={expandedBoxId === 3}
                         onExpand={() => handleExpand(3)} />
-                    <DataBox dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' isExpanded={expandedBoxId === 4}
+                    <DataBoxSurvey dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' isExpanded={expandedBoxId === 4}
                         onExpand={() => handleExpand(4)} />
-                    <DataBox dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other' isExpanded={expandedBoxId === 5}
+                    <DataBoxSurvey dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other' isExpanded={expandedBoxId === 5}
                         onExpand={() => handleExpand(5)} />
                 </Grid>
             </Grid>
-
+            <Grid container className='mt-0'>
+                <Grid container spacing={1} rowGap={2} columns={{ xs: 4, sm: 8, md: 12 }} className='mt-0'>
+                    <Grid item xs={4} sm={8} md={12}>
+                        <Typography variant='h6' className='dataTitle'>Performance</Typography>
+                    </Grid>
+                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue='-16K' subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={chartData} />
+                    <DataBoxPerformance dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' />
+                    <DataBoxPerformance dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' />
+                    <DataBoxPerformance dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' />
+                    <DataBoxPerformance dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other' />
+                </Grid>
+            </Grid>
 
             <div className="server-message">
                 <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography>

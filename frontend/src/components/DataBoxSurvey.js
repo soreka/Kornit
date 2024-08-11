@@ -8,7 +8,7 @@
 // import SurveyTitle from './SurveyTitle';
 // import SurveyQuestions from './SurveyQuestions';
 
-// const DataBox = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, color, isExpanded, onExpand }) => {
+// const DataBoxSurvey = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, color, isExpanded, onExpand }) => {
 //     const initialSizes = boxType === 'Big' ? { xs: 4, sm: 8, md: 8 } : { xs: 2, sm: 4, md: 4 };
 //     const expandedSizes = { xs: 4, sm: 8, md: 8 };
 
@@ -152,14 +152,14 @@
 //     );
 // };
 
-// export default DataBox;
+// export default DataBoxSurvey;
 import { useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import SurveyTitle from './SurveyTitle';
 import SurveyQuestions from './SurveyQuestions';
 import Chart from './Chart'
 
-const DataBox = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, color, isExpanded, onExpand }) => {
+const DataBoxSurvey = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, color, isExpanded, onExpand }) => {
     const initialSizes = boxType === 'Big' ? { xs: 4, sm: 8, md: 8 } : { xs: 2, sm: 4, md: 4 };
     const expandedSizes = { xs: 4, sm: 8, md: 8 };
 
@@ -265,4 +265,4 @@ const DataBox = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, 
     );
 };
 
-export default DataBox;
+export default DataBoxSurvey;
