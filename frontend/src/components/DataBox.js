@@ -201,6 +201,10 @@ const DataBox = ({ dataType, subDataType, mainDataValue, subDataValue, boxType, 
                 {subDataType && <div className='dataTypeTitles'>
                     <Typography variant='body1' className='dataType'>{dataType}</Typography>
                     <Typography variant='body1' className='subDataType'>{subDataType}</Typography>
+
+                </div>}
+                {isExpanded && <div>
+                    <Chart data={data} />
                 </div>}
                 {boxType === 'Big' && <Typography variant='h5' className='dataValue'>{mainDataValue}</Typography>}
                 {boxType === 'Big' ?

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../style/Login.css';
 import kornitImage from '../assets/kornitLogo.jpeg';
 import correctImage from '../assets/correct input.svg';
@@ -16,9 +18,35 @@ const Login = () => {
     color: "red"
   });
 
+  const navigate = useNavigate(); 
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    try {
+
+      const response = await axios.post('http://localhost:3000/api/auth/login', {
+        email: uniqueId.value, 
+        password: password.value
+      });
+      if (response.data.token) {
+
+        localStorage.setItem('token', response.data.token);
+        console.log(response.data.token)
+
+        navigate('/dashboard');
+      } else {
+        console.error('Token not found in response');
+      }
+    } catch (error) {
+
+      console.error('Login failed:', error.response ? error.response.data : error.message);
+    }
+  };
+
   return (
     <div className="login-container">
-      <form className="login-form">
+      <form className="login-form" onSubmit={handleSignIn}>
         <div className='image-container'>
           <img className="kornitImage" src={kornitImage} alt="Kornit Logo" />
         </div>
@@ -88,7 +116,6 @@ const Login = () => {
             <img className="inputIcon" src={password.img} alt="Validation Icon"/>
           </div>
         </div>
-        <p className='wrong-note'>notes...</p>
         <button type="submit">Sign in</button>
       </form>
     </div>
