@@ -15,7 +15,7 @@ const ProtectedRoute = ({ element: Element }) => {
         return <Navigate to="/" />;
       }
 
-      return <Element />;
+      return Element;
     } catch (error) {
       console.error("Error decoding token:", error);
       return <Navigate to="/" />;
