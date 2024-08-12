@@ -6,6 +6,7 @@ const moment = require('moment');
 const dbFilePath = path.join(__dirname, './config/db.js');
 const connectDB = require(dbFilePath);
 const notificationRoutes = require('./routes/notificationRoutes');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -14,6 +15,7 @@ const db = connectDB();
 
 // Init Middleware
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Define Routes
 app.use('/api/notifications', notificationRoutes);

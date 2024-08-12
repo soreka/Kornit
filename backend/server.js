@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middleware/auth');
 const dashboardRoutes = require('./dashboard');
 const filtersRoutes = require('./filters');
+const notificationRoutes = require('./routes/notificationRoutes');
 const cors = require('cors');
 const moment = require('moment'); // Ensure moment is required
 const { default: mongoose } = require('mongoose');
@@ -20,11 +21,14 @@ app.use(cors());
 // Connect to the database
 connectDB();
 
+
+
+
 // Define Routes
 app.use('/api/auth', authRoutes);
 app.use('/api', dashboardRoutes);
 app.use('/api', filtersRoutes);
-
+app.use('/api/notifications', notificationRoutes);
 // Protected Route
 app.get('/api/protected', authMiddleware, (req, res) => {
   res.send('This is a protected route.');
