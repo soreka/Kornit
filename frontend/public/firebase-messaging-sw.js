@@ -3,14 +3,15 @@ importScripts("https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js")
 importScripts("https://www.gstatic.com/firebasejs/9.1.3/firebase-messaging-compat.js");
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyDVOCdc-W0K8qI4HRrD-e1P1v8OKRHsomc',
-    authDomain: "notification-1dc26.firebaseapp.com",
-    projectId: "notification-1dc26",
-    storageBucket: "notification-1dc26.appspot.com",
-    messagingSenderId: "351762808913",
-    appId: "1:351762808913:web:ac0044a0163c758ac7b870",
-    measurementId: "G-LY3QY6E7V4",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
+
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
