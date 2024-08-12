@@ -1,18 +1,23 @@
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import DashBoard from "./pages/dashboard";
+import Dashboard from "./pages/dashboard";
 import Login from "./components/Login";
-import Notification from "./components/Notification"; // Import your Notification component
+import ProtectedRoute from "./pages/ProtectedRoute";
 import Filters from "./pages/Filters";
 import "./assets/styles/global.css";
+import DashBoard from "./pages/dashboard";
 
 function App() {
+  const [filter, setFilter] = useState({})
   return (
     <>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashBoard" element={<DashBoard />} />
-        <Route path="/filter" element={<Filters />} />
-        <Route path="/notifications" element={<Notification />} />
+        <Route
+          path="/dashboard"
+          element={<ProtectedRoute element={<DashBoard filter={filter} />} />}
+        />
+        <Route path="/filter" element={<ProtectedRoute element={<Filters setFilter={setFilter} filter={filter} />} />} />
       </Routes>
     </>
   );

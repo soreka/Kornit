@@ -1,41 +1,18 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-const authMiddleware = require('./middleware/auth');
-const dashboardRoutes = require('./dashboard');
-const filtersRoutes = require('./filters');
-const notificationRoutes = require('./routes/notificationRoutes');
-const cors = require('cors');
-const moment = require('moment'); // Ensure moment is required
+const express = require("express");
+const router = express.Router();
 const { default: mongoose } = require('mongoose');
+const moment = require('moment'); // Ensure moment is required
 
-dotenv.config();
-
-const app = express();
-const PORT = 3000;
-
-app.use(express.json());
-app.use(cors());
-
-// Connect to the database
-connectDB();
-
-
-
-
-// Define Routes
-app.use('/api/auth', authRoutes);
-app.use('/api', dashboardRoutes);
-app.use('/api', filtersRoutes);
-app.use('/api/notifications', notificationRoutes);
-// Protected Route
-app.get('/api/protected', authMiddleware, (req, res) => {
-  res.send('This is a protected route.');
-});
-
-// POST /filter Route
-app.post('/filter', async (req, res) => {
+// router.post("/dashboard-data", (req, res) => {
+//   res.json({
+//     success: true,
+//     data: {
+//       message: "This is the dashboard data",
+//       stats: [10, 20, 30, 40, 50, 60, 70],
+//     },
+//   });
+// });
+router.post("/dashboard-data", async (req, res) => {
   try {
     const db = mongoose.connection.db; // Get the MongoDB connection
     const machinesCollection = db.collection('machines');
@@ -131,9 +108,4 @@ app.post('/filter', async (req, res) => {
   }
 });
 
-
-// Start the Server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
+module.exports = router;
