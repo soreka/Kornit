@@ -6,6 +6,7 @@ import filterImg from '../assets/images/dashboard/filter.png'
 import DataBoxSurvey from '../components/DataBoxSurvey';
 import DataBoxPerformance from '../components/DataBoxPerformance';
 
+
 import { useNavigate } from "react-router-dom";
 import apiClient from './apiClient';
 
@@ -44,8 +45,19 @@ function DashBoard({ filter }) {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const response = await apiClient.get('/dashboard-data');
-                setDashboardData(response.data.data);
+                const response = await apiClient.post('/dashboard-data',{
+                   
+                    "SelectedFilters":{
+                        "timeFilter":"YeartoDate",
+                        "regions":[],
+                        "clientNames":["Air Waves LLC., dba Hybrid Digital-Lewis Center, OH"],
+                        "machineTypes":["Atlas MAX"]
+                    }
+                    
+                });
+                setDashboardData(response.data);
+                console.log("this is dashboardData", dashboardData)
+                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
             }
@@ -129,7 +141,7 @@ function DashBoard({ filter }) {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
-                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue='-16K' subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={chartData} />
+                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue={dashboardData && dashboardData.totalImpressions}  subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={chartData} />
                     <DataBoxPerformance dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' />
@@ -138,7 +150,7 @@ function DashBoard({ filter }) {
             </Grid>
 
             <div className="server-message">
-                <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography>
+                {/* <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography> */}
             </div>
         </div >
     )
