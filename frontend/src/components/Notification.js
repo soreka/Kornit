@@ -1,40 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { messaging } from '../firebase';
-import { getToken } from 'firebase/messaging';
+// import { messaging } from '../firebase';
+// import { getToken } from 'firebase/messaging';
 
 const NotificationBox = () => {
   const [customerName, setCustomerName] = useState('');
   const [showButtons, setShowButtons] = useState(false);
 
-  async function requestPermission() {
-    try {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        const token = await getToken(messaging, {
-          vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY,
-        });
-        console.log('Token Gen', token);
-        sendDataToServer(token, /* Here we send UserID */);
-      } else if (permission === 'denied') {
-        alert('You denied the notification');
-      }
-    } catch (error) {
-      console.error('An error occurred while retrieving token.', error);
-    }
-  }
+  // async function requestPermission() {
+  //   try {
+  //     const permission = await Notification.requestPermission();
+  //     if (permission === 'granted') {
+  //       const token = await getToken(messaging, {
+  //         vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY,
+  //       });
+  //       console.log('Token Gen', token);
+  //       sendDataToServer(token, /* Here we send UserID */);
+  //     } else if (permission === 'denied') {
+  //       alert('You denied the notification');
+  //     }
+  //   } catch (error) {
+  //     console.error('An error occurred while retrieving token.', error);
+  //   }
+  // }
 
-  function sendDataToServer(token, userId) {
-    fetch('http://localhost:5000/api/notifications/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: token, userId: userId }),
-    })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
-  }
+  // function sendDataToServer(token, userId) {
+  //   fetch('http://localhost:5000/api/notifications/token', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ token: token, userId: userId }),
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => console.log(data))
+  //     .catch(error => console.error('Error:', error));
+  // }
 
   const handleSendNotification = async type => {
     try {
@@ -54,12 +54,12 @@ const NotificationBox = () => {
     }
   };
 
-  useEffect(() => {
-    async function initialize() {
-      return requestPermission();
-    }
-    initialize();
-  }, []);
+  // useEffect(() => {
+  //   async function initialize() {
+  //     return requestPermission();
+  //   }
+  //   initialize();
+  // }, []);
 
   return (
     <div>

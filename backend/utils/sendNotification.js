@@ -3,15 +3,43 @@ const twilio = require('twilio');
 const dotenv = require('dotenv');
 const { MongoClient } = require('mongodb');
 
+customers = [{
+    "_id": {
+      "$oid": "66b4f320523905b7f05e916b"
+    },
+    name: "ahmed",
+    email: "Ahmed.m.tayah@gmail.com",
+    phone: "+972527588912"
+  },
+  {
+    "_id": {
+      "$oid": "66b4ee73523905b7f05e9166"
+    },
+    name: "adan",
+    email: "adanmwasse@gmail.com",
+    phone: "+972546662844"
+  }]
+
 dotenv.config();
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS
+//     }
+// });
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
@@ -21,7 +49,7 @@ const getCustomerData = async (customerName, db) => {
 };
 
 const sendSMSNotification = async (customerName, db) => {
-    const customer = await getCustomerData(customerName, db);
+    customer = customers[0]
     if (!customer || !customer.phone) {
         console.error(`No valid phone number found for ${customerName}`);
         return;
@@ -41,7 +69,8 @@ const sendSMSNotification = async (customerName, db) => {
 
 
 const makeVoiceCall = async (customerName, db) => {
-    const customer = await getCustomerData(customerName, db);
+    // const customer = await getCustomerData(customerName, db);
+    customer = customers[0]
     if (!customer || !customer.phone) {
         console.error(`No valid phone number found for ${customerName}`);
         return;
@@ -70,7 +99,8 @@ const makeVoiceCall = async (customerName, db) => {
 };
 
 const sendEmailNotification = async (customerName, db) => {
-    const customer = await getCustomerData(customerName, db);
+    // const customer = await getCustomerData(customerName, db);
+    customer = customers[0]
     if (!customer || !customer.email) {
         console.error(`No valid email found for ${customerName}`);
         return;

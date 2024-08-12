@@ -1,6 +1,6 @@
 const { sendSMSNotification, sendWhatsAppNotification, makeVoiceCall, sendEmailNotification } = require('../utils/sendNotification');
 const connectDB = require('../config/db');
-const admin = require('../config/firebase-admin');
+// const admin = require('../config/firebase-admin');
 
 const sendNotification = async (req, res) => {
   const { type, customerName } = req.body;

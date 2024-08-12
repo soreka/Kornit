@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGO_URI;
 const dbName = process.env.MONGODB_DB_NAME;
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
