@@ -1,5 +1,5 @@
 import '@fontsource/roboto/500.css';
-import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert } from '@mui/material';
+import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert, CircularProgress, Container } from '@mui/material';
 import '../assets/styles/dashboard.css';
 import { useMemo, useState, useEffect } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png';
@@ -17,14 +17,7 @@ function DashBoard({ filter }) {
     console.log('rendered');
 
     const navigate = useNavigate();
-    const [chartData, setChartData] = useState([
-        {
-            value: 50, maxValue: 120, minValue: 10, Title: 'Maintenance_Time_In_State_Minutes'
-        },
-        { value: 0, maxValue: 100, minValue: 0, Title: 'Loading_Time' },
-        { value: 20, maxValue: 100, minValue: 0, Title: 'Idle_state_duration' },
-        { value: 70, maxValue: 100, minValue: 0, Title: 'Error_Time_In_State_Minutes' }
-    ]);
+
     const [client, setClient] = useState('Mohamad');
     const [region, setRegion] = useState('USA');
     const [expanded, setExpanded] = useState(false);
@@ -56,6 +49,7 @@ function DashBoard({ filter }) {
 
                 });
 
+
                 setDashboardData(response.data);
                 console.log("Dashboard data:", response.data);
 
@@ -81,8 +75,15 @@ function DashBoard({ filter }) {
 
         fetchSurveyData();
     }, []);
-
+    if (dashboardData == null) return (
+        <Container
+            sx={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}
+        >
+            < CircularProgress color="inherit" />
+        </Container>
+    )
     return (
+
         <div className='dashboard'>
             <Grid container className='mt-0' spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={1.8} sm={4} md={6}>
@@ -160,7 +161,7 @@ function DashBoard({ filter }) {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
-                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue={dashboardData && dashboardData.totalImpressions} subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={chartData} />
+                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue={dashboardData && dashboardData.totalImpressions} subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={dashboardData && dashboardData.chartData} />
                     <DataBoxPerformance dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' />
@@ -168,9 +169,6 @@ function DashBoard({ filter }) {
                 </Grid>
             </Grid>
 
-            <div className="server-message">
-                <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography>
-            </div>
         </div >
     )
 }
