@@ -82,12 +82,12 @@ app.post('/filter', async (req, res) => {
       switch (timeFilterName) {
         case "LastWeek":
           let startOfRelativeWeek = now.clone().subtract(2, 'weeks').startOf('week').format('YYYYMMDD');
-          relativeComparedDateQuery = {$gte: startOfRelativeWeek, $lt: startOfLastWeek}
+          relativeComparedDateQuery = { $gte: startOfRelativeWeek, $lt: startOfLastWeek }
           dateQuery = { $gte: startOfLastWeek, $lt: startOfThisWeek };
           break;
         case "LastMonth":
           let startOfRelativeMonth = now.clone().subtract(2, 'months').startOf('month').format('YYYYMMDD');
-          relativeComparedDateQuery = {$gte: startOfRelativeMonth, $lt: startOfLastMonth}
+          relativeComparedDateQuery = { $gte: startOfRelativeMonth, $lt: startOfLastMonth }
           dateQuery = { $gte: startOfLastMonth, $lt: startOfThisMonth };
           break;
         case "YeartoDate":
@@ -115,30 +115,63 @@ app.post('/filter', async (req, res) => {
       DateInt: relativeComparedDateQuery,
     }).toArray();
 
-    // Calculate total handling time and total impressions
-    const totalHandlingTime = machinePerformances.reduce((sum, performance) => {
-      const handlingTime = Math.abs(((performance.Printing_Hours) * 60 - (performance.Error_Time_In_State_Minutes) -
+    let return_obj = {
+      Maintenance_Time_In_State_Minutes: { value: 0, maxValue: -Infinity, minValue: Infinity, Title: 'Maintenance time(m)' },
+      Loading_Time: { value: 0, maxValue: -Infinity, minValue: Infinity, Title: 'Loading' },
+      Idle_state_duration: { value: 0, maxValue: -Infinity, minValue: Infinity, Title: 'Idle duration' },
+      Error_Time_In_State_Minutes: { value: 0, maxValue: -Infinity, minValue: Infinity, Title: 'Error time' },
+    };
+    let totalHandlingTime = 0;
+    // Calculate total handling time and update return_obj
+    machinePerformances.forEach((performance) => {
+      totalHandlingTime += Math.abs(((performance.Printing_Hours) * 60 - (performance.Error_Time_In_State_Minutes) -
         (performance.Maintenance_Time_In_State_Minutes)) / 60);
-      return sum + handlingTime;
-    }, 0);
+
+      return_obj.Maintenance_Time_In_State_Minutes.value += Number(performance.Maintenance_Time_In_State_Minutes);
+      return_obj.Maintenance_Time_In_State_Minutes.maxValue = Math.max(return_obj.Maintenance_Time_In_State_Minutes.maxValue, Number(performance.Maintenance_Time_In_State_Minutes));
+      return_obj.Maintenance_Time_In_State_Minutes.minValue = Math.min(return_obj.Maintenance_Time_In_State_Minutes.minValue, Number(performance.Maintenance_Time_In_State_Minutes));
+
+      return_obj.Loading_Time.value += Number(performance.Loading_Time);
+      return_obj.Loading_Time.maxValue = Math.max(return_obj.Loading_Time.maxValue, Number(performance.Loading_Time));
+      return_obj.Loading_Time.minValue = Math.min(return_obj.Loading_Time.minValue, Number(performance.Loading_Time));
+
+      return_obj.Idle_state_duration.value += Number(performance.Idle_state_duration);
+      return_obj.Idle_state_duration.maxValue = Math.max(return_obj.Idle_state_duration.maxValue, Number(performance.Idle_state_duration));
+      return_obj.Idle_state_duration.minValue = Math.min(return_obj.Idle_state_duration.minValue, Number(performance.Idle_state_duration));
+
+      return_obj.Error_Time_In_State_Minutes.value += Number(performance.Error_Time_In_State_Minutes);
+      return_obj.Error_Time_In_State_Minutes.maxValue = Math.max(return_obj.Error_Time_In_State_Minutes.maxValue, Number(performance.Error_Time_In_State_Minutes));
+      return_obj.Error_Time_In_State_Minutes.minValue = Math.min(return_obj.Error_Time_In_State_Minutes.minValue, Number(performance.Error_Time_In_State_Minutes));
+
+    });
 
     const averageHandlingTime = totalHandlingTime / machinePerformances.length;
-    
+
     const totalImpressions = machinePerformances.reduce((sum, performance) => {
       return sum + Number(performance.Impressions);
     }, 0);
 
-    const relativeComparedTotalImpressions = relativeComparedPerformances.reduce((sum,performance) => {
+    const relativeComparedTotalImpressions = relativeComparedPerformances.reduce((sum, performance) => {
       return sum + Number(performance.Impressions)
     }, 0)
-    let impressionsGrowth = (totalImpressions/ relativeComparedTotalImpressions)* 100 
-    let handlingTimeSeconds = (totalHandlingTime*60)/totalImpressions
+    let impressionsGrowth = (totalImpressions / relativeComparedTotalImpressions) * 100
+    let handlingTimeSeconds = (totalHandlingTime * 60) / totalImpressions
+
+
+    // {
+    //   value: 50, maxValue: 120, minValue: 10, Title: 'Maintenance_Time_In_State_Minutes'
+    // },
+    // { value: 0, maxValue: 100, minValue: 0, Title: 'Loading_Time' },
+    // { value: 20, maxValue: 100, minValue: 0, Title: 'Idle_state_duration' },
+    // { value: 70, maxValue: 100, minValue: 0, Title: 'Error_Time_In_State_Minutes' }
+
     // Prepare the response object
     const result = {
-      handlingTimeSeconds:handlingTimeSeconds,
+      chartData: return_obj,
+      handlingTimeSeconds: handlingTimeSeconds,
       utilization: averageHandlingTime,
       totalImpressions: totalImpressions,
-      impressionsGrowth:impressionsGrowth,
+      impressionsGrowth: impressionsGrowth,
       machinePerformances: machinePerformances,
     };
 

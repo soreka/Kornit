@@ -17,11 +17,12 @@ function DashBoard({ filter }) {
     console.log('rendered')
     const navigate = useNavigate();
     const [chartData, setChartData] = useState([
-        { value: 100, maxValue: 200, minValue: 0, Title: 'performace' },
-        { value: 50, maxValue: 120, minValue: 10, Title: 'speed' },
-        { value: 0, maxValue: 100, minValue: 0, Title: 'time' },
-        { value: 20, maxValue: 100, minValue: 0, Title: 'delay' },
-        { value: 70, maxValue: 100, minValue: 0, Title: 'bugs' }
+        {
+            value: 50, maxValue: 120, minValue: 10, Title: 'Maintenance_Time_In_State_Minutes'
+        },
+        { value: 0, maxValue: 100, minValue: 0, Title: 'Loading_Time' },
+        { value: 20, maxValue: 100, minValue: 0, Title: 'Idle_state_duration' },
+        { value: 70, maxValue: 100, minValue: 0, Title: 'Error_Time_In_State_Minutes' }
     ]);
     const [client, setClient] = useState('Mohamad')
     const [region, setRegion] = useState('USA')
@@ -45,15 +46,15 @@ function DashBoard({ filter }) {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const response = await apiClient.post('/dashboard-data',{
-                   
-                    "SelectedFilters":{
-                        "timeFilter":"YeartoDate",
-                        "regions":[],
-                        "clientNames":["Air Waves LLC., dba Hybrid Digital-Lewis Center, OH"],
-                        "machineTypes":["Atlas MAX"]
+                const response = await apiClient.post('/dashboard-data', {
+
+                    "SelectedFilters": {
+                        "timeFilter": "YeartoDate",
+                        "regions": [],
+                        "clientNames": ["Air Waves LLC., dba Hybrid Digital-Lewis Center, OH"],
+                        "machineTypes": ["Atlas MAX"]
                     }
-                    
+
                 });
                 setDashboardData(response.data);
                 console.log("this is dashboardData", dashboardData)
@@ -141,7 +142,7 @@ function DashBoard({ filter }) {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
-                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue={dashboardData && dashboardData.totalImpressions}  subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={chartData} />
+                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue={dashboardData && dashboardData.totalImpressions} subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={chartData} />
                     <DataBoxPerformance dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' />
