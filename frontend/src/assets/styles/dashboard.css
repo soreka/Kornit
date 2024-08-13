@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+body {
+    background: #EFF3F6;
+}
+
+.dashboard {
+    width: 95%;
+    margin: auto auto !important;
+    padding: 2%;
+}
+
+.chooseDate {
+    margin-top: 10px;
+}
+
+.chooseDate>* {
+    margin-left: 5px !important;
+    color: #354052 !important;
+    border-radius: 0px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+}
+
+.clickedDate {
+    color: #AF243B !important;
+    border-bottom: 1px solid #AF243B !important;
+}
+
+.dataTitle {
+    font-family: 'Rubik' !important;
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    margin-left: 5px !important;
+    margin-top: 10px !important;
+    color: #354052 !important;
+}
+
+.dataBox {
+    border-radius: 13.44px;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+        0 1px 1px hsl(0deg 0% 0% / 0.075),
+        0 2px 2px hsl(0deg 0% 0% / 0.075),
+        0 4px 4px hsl(0deg 0% 0% / 0.075),
+        0 8px 8px hsl(0deg 0% 0% / 0.075),
+        0 16px 16px hsl(0deg 0% 0% / 0.075);
+    padding: 5px;
+    height: 9rem;
+    transition: 0.25s;
+}
+
+.dataBox>.MuiTypography-root,
+.dataTarget>.MuiTypography-root,
+.dataTypeTitels> :first-child {
+    font-family: 'Rubik' !important;
+    font-weight: 800 !important;
+    color: #354052 !important;
+}
+
+.dataBox>.MuiTypography-root {
+    padding: 10px !important;
+}
+
+.datesBox {
+    flex-direction: column !important;
+    align-items: center;
+}
+
+.dataType {
+    font-size: 1rem !important;
+}
+
+.dataValue {
+    margin: auto auto !important;
+    font-size: 2.5rem !important;
+    font-weight: 1000 !important;
+}
+
+.mainDataValue,
+.subDataValue {
+    font-family: 'Rubik' !important;
+    color: #354052 !important;
+}
+
+.mainDataValue {
+    font-size: 2rem !important;
+    font-weight: 1000 !important;
+}
+
+.subDataValue {
+    font-size: 1.25rem !important;
+    padding-bottom: 10px;
+    margin-left: 10px !important;
+}
+
+.dataTarget {
+    margin-left: auto !important;
+    display: flex;
+    flex-direction: column;
+    padding: 10px !important;
+    align-items: center;
+    margin-top: -30px;
+}
+
+.dataTypeTitels {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.subDataType {
+    font-family: 'Rubik' !important;
+    color: #354052 !important;
+    font-size: 1rem !important;
+    font-weight: normal !important;
+}
+
+.dataFilter {
+    background-color: white !important;
+    color: #354052 !important;
+    width: 100%;
+}
+
+.filterBT {
+    border: 1px solid #C5D0DE !important;
+    height: 100%;
+}
+
+.chooseWeek {
+    display: flex;
+    margin-top: 25px;
+}
+
+.right-arrow {
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-right: 40px solid #D9D9D9;
+    border-bottom: 20px solid transparent;
+}
+
+.left-arrow {
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-left: 40px solid #D9D9D9;
+    border-bottom: 20px solid transparent;
+}
+
+.currentWeek {
+    margin: auto 25px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Rubik' !important;
+}
+
+.currentWeek> :first-child {
+    margin-bottom: 10px;
+}
+
+
+.surveyType {
+    border-top: 1px solid black;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.question-box>Typography {
+    background-color: green;
+
+}
+
+.expanded {
+    height: 18rem !important;
+}
+
+.expanded>.dataValue {
+    display: none;
+}
+
+.expanded>.dataType {
+    display: none;
+}
+
+.expandedInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 5px;
+    font-family: 'Rubik' !important;
+    font-weight: 800 !important;
+    color: #354052 !important;
+}
+
+.expandedInfo> :first-child {
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.expandedInfo> :last-child {
+    transition: 1s;
+    font-family: 'Rubik' !important;
+    font-weight: 800 !important;
+    font-size: 2.5rem !important;
+}
+
+.expanded>.dataTarget {
+    margin-top: auto;
+}
+
+.chooseDate {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+@media only screen and (max-width: 400px) {
+    .chooseDate>* {
+        font-size: 0.75rem !important;
+    }
+}

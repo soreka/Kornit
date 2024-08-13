@@ -1,0 +1,18 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+iframe#webpack-dev-server-client-overlay{display:none!important}
