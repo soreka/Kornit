@@ -1,9 +1,11 @@
 import '@fontsource/roboto/500.css';
-import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert } from '@mui/material';
+import { Modal, Box, Grid, Autocomplete, TextField, Button, Typography, Alert, IconButton } from '@mui/material';
 import '../assets/styles/dashboard.css'
 import { useMemo, useState, useEffect } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png'
 import DataBox from '../components/DataBox';
+import axios from 'axios';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { useNavigate } from "react-router-dom";
 import apiClient from './apiClient';
@@ -25,19 +27,15 @@ function DashBoard({ filter }) {
     const [region, setRegion] = useState('USA')
     const [expanded, setExpanded] = useState(false);
     const [clickedDate, setClickedDate] = useState("Year")
-
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const [expandedBoxId, setExpandedBoxId] = useState(null);
+    const [dashboardData, setDashboardData] = useState(null);
 
 
     const handleExpand = (boxId) => {
         setExpandedBoxId(prevId => (prevId === boxId ? null : boxId));
-    };
-
-    const [dashboardData, setDashboardData] = useState(null);
-
-    const onDateChange = (date) => {
-        setClickedDate(date);
     };
 
     useEffect(() => {
@@ -49,9 +47,35 @@ function DashBoard({ filter }) {
                 console.error('Error fetching dashboard data:', error);
             }
         };
-
         fetchDashboardData();
     }, []);
+
+
+    const onDateChange = (date) => {
+        setClickedDate(date);
+        if (date === "Custom") {
+            setIsModalOpen(true);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleDateSubmit = async () => {
+        try {
+            const response = await apiClient.get('/your-endpoint', {
+                params: {
+                    startDate: startDate,
+                    endDate: endDate
+                }
+            });
+            console.log('Server response:', response.data);
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error('Error sending dates:', error);
+        }
+    };
 
     return (
         <div className='dashboard'>
@@ -87,8 +111,73 @@ function DashBoard({ filter }) {
                         className={clickedDate === "Year" ? "clickedDate" : ''}
                     >Year to date</Button>
                     <Button variant="text" onClick={() => onDateChange("Custom")}
-                        className={clickedDate === "Custom" ? "clickedDate" : ''}
-                    >Custom</Button>
+                        className={clickedDate === "Custom" ? "clickedDate" : ''}>
+                        Custom
+                    </Button>
+
+                    <Modal
+                        open={isModalOpen}
+                        onClose={handleCloseModal}
+                        aria-labelledby="modal-title"
+                        aria-describedby="modal-description"
+                    >
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: 300,
+                                bgcolor: 'background.paper',
+                                boxShadow: 24,
+                                p: 4,
+                                borderRadius: 2
+                            }}
+                        >
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleCloseModal}
+                                sx={{
+                                    position: 'absolute',
+                                    right: 8,
+                                    top: 8,
+                                    color: (theme) => theme.palette.grey[500],
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Typography id="modal-title" variant="h6" component="h2">
+                                Select Date Range
+                            </Typography>
+                            <TextField
+                                label="Start Date"
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                fullWidth
+                                sx={{ mt: 2 }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <TextField
+                                label="End Date"
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                fullWidth
+                                sx={{ mt: 2, mb: 3 }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                                <Button variant="contained" color="primary" onClick={handleDateSubmit}>
+                                    Submit
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Modal>
                 </div>
                 <div className='chooseWeek'>
                     <div className='right-arrow' />
