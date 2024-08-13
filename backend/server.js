@@ -76,13 +76,18 @@ app.post('/filter', async (req, res) => {
 
     // Date filtering
     let dateQuery = {};
+    let relativeComparedDateQuery = {}
     if (SelectedFilters.timeFilter) {
       const timeFilterName = SelectedFilters.timeFilter;
       switch (timeFilterName) {
         case "LastWeek":
+          let startOfRelativeWeek = now.clone().subtract(2, 'weeks').startOf('week').format('YYYYMMDD');
+          relativeComparedDateQuery = {$gte: startOfRelativeWeek, $lt: startOfLastWeek}
           dateQuery = { $gte: startOfLastWeek, $lt: startOfThisWeek };
           break;
         case "LastMonth":
+          let startOfRelativeMonth = now.clone().subtract(2, 'months').startOf('month').format('YYYYMMDD');
+          relativeComparedDateQuery = {$gte: startOfRelativeMonth, $lt: startOfLastMonth}
           dateQuery = { $gte: startOfLastMonth, $lt: startOfThisMonth };
           break;
         case "YeartoDate":
@@ -97,10 +102,17 @@ app.post('/filter', async (req, res) => {
     const customers = await customersCollection.find(query).toArray();
     const allMachineSerialNumbers = [...new Set(customers.flatMap(customer => customer.Machines))];
 
+
+
     // Fetch machine performances
     const machinePerformances = await machinePerformancesCollection.find({
       SerialNumber: { $in: allMachineSerialNumbers },
       DateInt: dateQuery,
+    }).toArray();
+
+    const relativeComparedPerformances = await machinePerformancesCollection.find({
+      SerialNumber: { $in: allMachineSerialNumbers },
+      DateInt: relativeComparedDateQuery,
     }).toArray();
 
     // Calculate total handling time and total impressions
@@ -116,10 +128,17 @@ app.post('/filter', async (req, res) => {
       return sum + Number(performance.Impressions);
     }, 0);
 
+    const relativeComparedTotalImpressions = relativeComparedPerformances.reduce((sum,performance) => {
+      return sum + Number(performance.Impressions)
+    }, 0)
+    let impressionsGrowth = (totalImpressions/ relativeComparedTotalImpressions)* 100 
+    let handlingTimeSeconds = (totalHandlingTime*60)/totalImpressions
     // Prepare the response object
     const result = {
-      handlingTime: averageHandlingTime,
+      handlingTimeSeconds:handlingTimeSeconds,
+      utilization: averageHandlingTime,
       totalImpressions: totalImpressions,
+      impressionsGrowth:impressionsGrowth,
       machinePerformances: machinePerformances,
     };
 
@@ -130,7 +149,6 @@ app.post('/filter', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 // Start the Server
 app.listen(PORT, () => {
