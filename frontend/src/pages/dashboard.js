@@ -1,20 +1,21 @@
 import '@fontsource/roboto/500.css';
 import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert } from '@mui/material';
-import '../assets/styles/dashboard.css'
+import '../assets/styles/dashboard.css';
 import { useMemo, useState, useEffect } from 'react';
-import filterImg from '../assets/images/dashboard/filter.png'
+import filterImg from '../assets/images/dashboard/filter.png';
 import DataBoxSurvey from '../components/DataBoxSurvey';
 import DataBoxPerformance from '../components/DataBoxPerformance';
-
 
 import { useNavigate } from "react-router-dom";
 import apiClient from './apiClient';
 
 function DashBoard({ filter }) {
     useMemo(() => {
-        console.log(filter)
-    }, [filter])
-    console.log('rendered')
+        console.log(filter);
+    }, [filter]);
+
+    console.log('rendered');
+
     const navigate = useNavigate();
     const [chartData, setChartData] = useState([
         {
@@ -24,20 +25,18 @@ function DashBoard({ filter }) {
         { value: 20, maxValue: 100, minValue: 0, Title: 'Idle_state_duration' },
         { value: 70, maxValue: 100, minValue: 0, Title: 'Error_Time_In_State_Minutes' }
     ]);
-    const [client, setClient] = useState('Mohamad')
-    const [region, setRegion] = useState('USA')
+    const [client, setClient] = useState('Mohamad');
+    const [region, setRegion] = useState('USA');
     const [expanded, setExpanded] = useState(false);
-    const [clickedDate, setClickedDate] = useState("Year")
-
+    const [clickedDate, setClickedDate] = useState("Year");
 
     const [expandedBoxId, setExpandedBoxId] = useState(null);
-
+    const [dashboardData, setDashboardData] = useState(null);
+    const [surveyData, setSurveyData] = useState(null);
 
     const handleExpand = (boxId) => {
         setExpandedBoxId(prevId => (prevId === boxId ? null : boxId));
     };
-
-    const [dashboardData, setDashboardData] = useState(null);
 
     const onDateChange = (date) => {
         setClickedDate(date);
@@ -56,15 +55,31 @@ function DashBoard({ filter }) {
                     }
 
                 });
+
                 setDashboardData(response.data);
-                console.log("this is dashboardData", dashboardData)
-                console.log(response.data);
+                console.log("Dashboard data:", response.data);
+
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
             }
         };
 
         fetchDashboardData();
+    }, []);
+
+    useEffect(() => {
+        const fetchSurveyData = async () => {
+            try {
+                const response = await apiClient.post('/dashboard-surveys');
+                setSurveyData(response.data.data.surveys);
+                console.log("Survey data:", response.data.data.surveys);
+
+            } catch (error) {
+                console.error('Error fetching survey data:', error);
+            }
+        };
+
+        fetchSurveyData();
     }, []);
 
     return (
@@ -77,19 +92,20 @@ function DashBoard({ filter }) {
                     <TextField label="Region" className='dataFilter' disabled value={region} />
                 </Grid>
                 <Grid item xs={1} sm={2} md={3}>
-                    <Button className='dataFilter filterBT' variant='outlined' onClick={() => navigate('/filter')}><span style={{ display: 'flex', alignItems: 'center' }} onClick={() => navigate('/filter')}>
-                        Filter
-                        <img
-                            src={filterImg}
-                            alt="filter"
-                            style={{ paddingLeft: '8px', order: 999, width: '18px', height: '18px' }}
-                            className="myIcon"
-                        />
-                    </span>
+                    <Button className='dataFilter filterBT' variant='outlined' onClick={() => navigate('/filter')}>
+                        <span style={{ display: 'flex', alignItems: 'center' }}>
+                            Filter
+                            <img
+                                src={filterImg}
+                                alt="filter"
+                                style={{ paddingLeft: '8px', order: 999, width: '18px', height: '18px' }}
+                                className="myIcon"
+                            />
+                        </span>
                     </Button>
                 </Grid>
             </Grid>
-            <Grid container className='mt-0 datesBox' >
+            <Grid container className='mt-0 datesBox'>
                 <div className='chooseDate'>
                     <Button variant="text" onClick={() => onDateChange("Week")}
                         className={clickedDate === "Week" ? "clickedDate" : ''}
@@ -119,13 +135,15 @@ function DashBoard({ filter }) {
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
 
-                    <DataBoxSurvey dataType='Impression vs. target'
-                        mainDataValue='-16K'
-                        subDataValue='65%'
-                        boxType='Big'
-                        color='primary'
-                        isExpanded={expandedBoxId === 1}
-                        onExpand={() => handleExpand(1)} />
+                    {surveyData && surveyData.cfi.questions.map((survey, index) => (
+                        <DataBoxSurvey key={index}
+                            dataType={survey.question}
+                            mainDataValue={survey.answer}
+                            boxType='Small'
+                            color='primary'
+                            isExpanded={expandedBoxId === index}
+                            onExpand={() => handleExpand(index)} />
+                    ))}
 
                     <DataBoxSurvey dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' isExpanded={expandedBoxId === 2}
                         onExpand={() => handleExpand(2)} />
@@ -151,7 +169,7 @@ function DashBoard({ filter }) {
             </Grid>
 
             <div className="server-message">
-                {/* <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography> */}
+                <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography>
             </div>
         </div >
     )
