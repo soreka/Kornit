@@ -23,7 +23,7 @@ export default function Filters({ setFilter, filter }) {
     { name: "kholod", isSelected: false }
   ]);
   const [valueS, setValueS] = React.useState([]);
-  const [valueM, setValueM] = React.useState([]);
+
 
 
   // Lists of items for left and right containers

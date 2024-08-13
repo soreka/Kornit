@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route
           path="/dashboard"
-          element={<ProtectedRoute element={<DashBoard filter={filter} />} />}
+          element={<ProtectedRoute element={<DashBoard filter={filter} setFilter={setFilter} />} />}
         />
         <Route path="/filter" element={<ProtectedRoute element={<Filters setFilter={setFilter} filter={filter} />} />} />
       </Routes>

@@ -9,8 +9,9 @@ import DataBoxPerformance from '../components/DataBoxPerformance';
 import { useNavigate } from "react-router-dom";
 import apiClient from './apiClient';
 
-function DashBoard({ filter }) {
+function DashBoard({ filter, setFilter }) {
     useMemo(() => {
+        sessionStorage.setItem('filters', JSON.stringify(filter));
         console.log(filter);
     }, [filter]);
 
@@ -36,6 +37,7 @@ function DashBoard({ filter }) {
     };
 
     useEffect(() => {
+        setFilter(JSON.parse(sessionStorage.getItem('filters') ?? '{}'));
         const fetchDashboardData = async () => {
             try {
                 const response = await apiClient.post('/dashboard-data', {
