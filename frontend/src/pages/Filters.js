@@ -11,19 +11,19 @@ import apiClient from './apiClient'
 
 export default function Filters({ setFilter, filter }) {
   const navigate = useNavigate();
-  const [value, setValue] = React.useState([]);
 
   // State for checkboxes in the left and right containers
   const [checkedLeft, setCheckedLeft] = React.useState(Array(6).fill(false));
   const [checkedRight, setCheckedRight] = React.useState(Array(6).fill(false));
   const [valueC, setValueC] = React.useState([
-    { name: "mohamad", isSelected: false },
-    { name: "amazon", isSelected: false },
-    { name: "google", isSelected: false },
-    { name: "khaled", isSelected: false },
-    { name: "kholod", isSelected: false }
+    { name: "Advanced-online-Coppell, TX", isSelected: false },
+    { name: "Afterburner FX LLC.-Hubbard", isSelected: false },
+    { name: "Air Waves LLC., dba Hybrid Digital-Lewis Center, OH", isSelected: false },
+
   ]);
   const [valueS, setValueS] = React.useState([]);
+
+
 
   // Lists of items for left and right containers
   const leftItems = [
@@ -50,8 +50,9 @@ export default function Filters({ setFilter, filter }) {
 
   const apply = () => {
     setFilter({
-      valueS,
-      valueC
+      s: valueS,
+      c: valueC,
+      m: [...leftItems.filter((_, index) => checkedLeft[index]), ...rightItems.filter((_, index) => checkedRight[index])]
     })
 
   };

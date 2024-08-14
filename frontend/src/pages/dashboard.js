@@ -1,5 +1,5 @@
 import '@fontsource/roboto/500.css';
-import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert } from '@mui/material';
+import { Box, Grid, Autocomplete, TextField, Button, Typography, Alert, CircularProgress, Container } from '@mui/material';
 import '../assets/styles/dashboard.css';
 import { useMemo, useState, useEffect } from 'react';
 import filterImg from '../assets/images/dashboard/filter.png';
@@ -8,22 +8,18 @@ import DataBoxPerformance from '../components/DataBoxPerformance';
 
 import { useNavigate } from "react-router-dom";
 import apiClient from './apiClient';
+import WeekNavigator from '../components/Weeknavigatore';
 
-function DashBoard({ filter }) {
+function DashBoard({ filter, setFilter }) {
     useMemo(() => {
+        sessionStorage.setItem('filters', JSON.stringify(filter));
         console.log(filter);
     }, [filter]);
 
     console.log('rendered');
 
     const navigate = useNavigate();
-    const [chartData, setChartData] = useState([
-        { value: 100, maxValue: 200, minValue: 0, Title: 'performace' },
-        { value: 50, maxValue: 120, minValue: 10, Title: 'speed' },
-        { value: 0, maxValue: 100, minValue: 0, Title: 'time' },
-        { value: 20, maxValue: 100, minValue: 0, Title: 'delay' },
-        { value: 70, maxValue: 100, minValue: 0, Title: 'bugs' }
-    ]);
+
     const [client, setClient] = useState('Mohamad');
     const [region, setRegion] = useState('USA');
     const [expanded, setExpanded] = useState(false);
@@ -42,16 +38,28 @@ function DashBoard({ filter }) {
     };
 
     useEffect(() => {
+        setFilter(JSON.parse(sessionStorage.getItem('filters') ?? '{}'));
+        console.log(JSON.stringify({
+            "SelectedFilters": {
+                "timeFilter": "YeartoDate",
+                "regions": filter?.s?.map((value) => value.title),
+                "clientNames": filter?.c?.filter(value => value.isSelected).map((value) => value.name),
+                "machineTypes": filter?.m
+            }
+        }));
         const fetchDashboardData = async () => {
             try {
                 const response = await apiClient.post('/dashboard-data', {
+
                     "SelectedFilters": {
                         "timeFilter": "YeartoDate",
-                        "regions": [],
-                        "clientNames": ["Air Waves LLC., dba Hybrid Digital-Lewis Center, OH"],
-                        "machineTypes": ["Atlas MAX"]
+                        "regions": filter?.s?.map((value) => value.title) ?? [],
+                        "clientNames": filter?.c?.filter(value => value.isSelected).map((value) => value.name) ?? [],
+                        "machineTypes": filter?.m ?? []
                     }
+
                 });
+
 
                 setDashboardData(response.data);
                 console.log("mac");
@@ -79,9 +87,15 @@ function DashBoard({ filter }) {
 
         fetchSurveyData();
     }, []);
-
-
+    if (dashboardData == null) return (
+        <Container
+            sx={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}
+        >
+            < CircularProgress color="inherit" />
+        </Container>
+    )
     return (
+
         <div className='dashboard'>
             <Grid container className='mt-0' spacing={1} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={1.8} sm={4} md={6}>
@@ -119,14 +133,15 @@ function DashBoard({ filter }) {
                         className={clickedDate === "Custom" ? "clickedDate" : ''}
                     >Custom</Button>
                 </div>
-                <div className='chooseWeek'>
+                {/* <div className='chooseWeek'>
                     <div className='right-arrow' />
                     <div className='currentWeek'>
                         <Typography variant='p'>Week 29</Typography>
                         <Typography variant='p'>10/07 - 14/07</Typography>
                     </div>
                     <div className='left-arrow' />
-                </div>
+                </div> */}
+                <WeekNavigator />
             </Grid >
             <Grid container className='mt-0'>
                 <Grid container spacing={1} rowGap={2} columns={{ xs: 4, sm: 8, md: 12 }} className='mt-0'>
@@ -163,7 +178,7 @@ function DashBoard({ filter }) {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
-                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue={dashboardData && dashboardData.totalImpressions} subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={chartData} />
+                    <DataBoxPerformance dataType='Impression vs. target' mainDataValue={dashboardData && dashboardData.totalImpressions} subDataValue='65%' boxType='Big' color='primary' handleClick={() => setExpanded(!expanded)} isExpanded={expanded} data={dashboardData && dashboardData.chartData} />
                     <DataBoxPerformance dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' />
                     <DataBoxPerformance dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' />
@@ -171,9 +186,6 @@ function DashBoard({ filter }) {
                 </Grid>
             </Grid>
 
-            <div className="server-message">
-                <Typography variant='body1'>{dashboardData ? JSON.stringify(dashboardData) : "Loading..."}</Typography>
-            </div>
         </div >
     )
 }

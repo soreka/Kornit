@@ -40,7 +40,9 @@ const Tags = React.memo(({ value, setValue }) => {
 });
 
 const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
+  { title: "KDEU", year: 1994 },
+  { title: "KDNA", year: 1994 },
+  { title: "KDAP", year: 1994 },
 ];
 
 export default Tags;
