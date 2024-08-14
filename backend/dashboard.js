@@ -3,131 +3,159 @@ const router = express.Router();
 const { default: mongoose } = require('mongoose');
 const moment = require('moment'); // Ensure moment is required
 
-router.post("/dashboard-surveys", (req, res) => {
-    res.json({
-      success: true,
-      data: {
-        surveys: {
-          cfi: {
-            questions: [
-              {
-                question: "How satisfied are you with the installation process?",
-                answer: "Very satisfied"
-              },
-              {
-                question: "Was the installation completed on time?",
-                answer: "Yes, it was on time"
-              },
-              {
-                question: "How would you rate the professionalism of the installers?",
-                answer: "Excellent"
-              },
-              {
-                question: "Were all your questions answered during the installation?",
-                answer: "Yes, all questions were answered"
-              },
-              {
-                question: "Would you recommend our installation service?",
-                answer: "Definitely"
-              }
-            ],
-            non_responders: [
-              "John Doe",
-              "Jane Smith",
-              "Alice Johnson"
-            ]
-          },
-          service_calls: {
-            questions: [
-              {
-                question: "How quickly was your service call answered?",
-                answer: "Within 10 minutes"
-              },
-              {
-                question: "Was the issue resolved on the first visit?",
-                answer: "Yes, it was"
-              },
-              {
-                question: "How would you rate the technician's knowledge?",
-                answer: "Very knowledgeable"
-              },
-              {
-                question: "Did the technician explain the issue and solution clearly?",
-                answer: "Yes, very clearly"
-              },
-              {
-                question: "How satisfied are you with the overall service?",
-                answer: "Highly satisfied"
-              }
-            ],
-            non_responders: [
-              "Bob Brown",
-              "Charlie Davis",
-              "Diana Evans"
-            ]
-          },
-          maintainence: {
-            questions: [
-              {
-                question: "How often is routine maintenance performed?",
-                answer: "Every 6 months"
-              },
-              {
-                question: "Is the maintenance schedule convenient?",
-                answer: "Yes, it's convenient"
-              },
-              {
-                question: "Were any issues found during the last maintenance?",
-                answer: "No issues found"
-              },
-              {
-                question: "How would you rate the thoroughness of the maintenance?",
-                answer: "Very thorough"
-              },
-              {
-                question: "Would you recommend our maintenance service?",
-                answer: "Yes, I would"
-              }
-            ],
-            non_responders: [
-              "Frank Green",
-              "George Harris",
-              "Helen White"
-            ]
-          },
-          machinetype_post_installation: {
-            questions: [
-              {
-                question: "Was the machine properly installed and tested?",
-                answer: "Yes, it was"
-              },
-              {
-                question: "Are you satisfied with the machine's performance?",
-                answer: "Yes, very satisfied"
-              },
-              {
-                question: "Did the installer provide adequate training?",
-                answer: "Yes, training was adequate"
-              },
-              {
-                question: "Have you experienced any issues since installation?",
-                answer: "No issues so far"
-              },
-              {
-                question: "Would you recommend this machine to others?",
-                answer: "Yes, definitely"
-              }
-            ],
-            non_responders: [
-              "Ivy Lee",
-              "Jack Miller",
-              "Karen Wilson"
-            ]
-          }
+router.get("/dashboard-surveys", (req, res) => {
+  console.log('i am in rout service');
+  res.json({
+    success: true,
+    data: {
+      dataType: "Surveys Response Rate",
+      percentageAnswered: "35%",
+      title1: "Non-Responders",
+      title2: "Questions",
+      subDataTitle:"Total sent surveys",
+      subDataValue:"2300",
+      surveys: {
+        cfi: {
+          array1: [
+            {
+              answeredPercentage: "58%",
+              question: "How satisfied are you with the installation process?",
+              answer: "Very satisfied"
+            },
+            {
+              answeredPercentage: "73%",
+              question: "Was the installation completed on time?",
+              answer: "Yes, it was on time"
+            },
+            {
+              answeredPercentage: "82%",
+              question: "How would you rate the professionalism of the installers?",
+              answer: "Excellent"
+            },
+            {
+              answeredPercentage: "65%",
+              question: "Were all your questions answered during the installation?",
+              answer: "Yes, all questions were answered"
+            },
+            {
+              answeredPercentage: "91%",
+              question: "Would you recommend our installation service?",
+              answer: "Definitely"
+            }
+          ],
+          array2: [
+            "John Doe",
+            "Jane Smith",
+            "Alice Johnson"
+          ]
+        },
+        service_calls: {
+          array1: [
+            {
+              answeredPercentage: "88%",
+              question: "How quickly was your service call answered?",
+              answer: "Within 10 minutes"
+            },
+            {
+              answeredPercentage: "77%",
+              question: "Was the issue resolved on the first visit?",
+              answer: "Yes, it was"
+            },
+            {
+              answeredPercentage: "93%",
+              question: "How would you rate the technician's knowledge?",
+              answer: "Very knowledgeable"
+            },
+            {
+              answeredPercentage: "84%",
+              question: "Did the technician explain the issue and solution clearly?",
+              answer: "Yes, very clearly"
+            },
+            {
+              answeredPercentage: "90%",
+              question: "How satisfied are you with the overall service?",
+              answer: "Highly satisfied"
+            }
+          ],
+          array2: [
+            "Bob Brown",
+            "Charlie Davis",
+            "Diana Evans"
+          ]
+        },
+        maintainence: {
+          array1: [
+            {
+              answeredPercentage: "75%",
+              question: "How often is routine maintenance performed?",
+              answer: "Every 6 months"
+            },
+            {
+              answeredPercentage: "83%",
+              question: "Is the maintenance schedule convenient?",
+              answer: "Yes, it's convenient"
+            },
+            {
+              answeredPercentage: "67%",
+              question: "Were any issues found during the last maintenance?",
+              answer: "No issues found"
+            },
+            {
+              answeredPercentage: "92%",
+              question: "How would you rate the thoroughness of the maintenance?",
+              answer: "Very thorough"
+            },
+            {
+              answeredPercentage: "89%",
+              question: "Would you recommend our maintenance service?",
+              answer: "Yes, I would"
+            }
+          ],
+          array2: [
+            "Frank Green",
+            "George Harris",
+            "Helen White"
+          ]
+        },
+        machinetype_post_installation: {
+          array1: [
+            {
+              answeredPercentage: "85%",
+              question: "Was the machine properly installed and tested?",
+              answer: "Yes, it was"
+            },
+            {
+              answeredPercentage: "90%",
+              question: "Are you satisfied with the machine's performance?",
+              answer: "Yes, very satisfied"
+            },
+            {
+              answeredPercentage: "80%",
+              question: "Did the installer provide adequate training?",
+              answer: "Yes, training was adequate"
+            },
+            {
+              answeredPercentage: "74%",
+              question: "Have you experienced any issues since installation?",
+              answer: "No issues so far"
+            },
+            {
+              answeredPercentage: "93%",
+              question: "Would you recommend this machine to others?",
+              answer: "Yes, definitely"
+            }
+          ],
+          array2: [
+            "Ivy Lee",
+            "Jack Miller",
+            "Karen Wilson"
+          ]
         }
       }
-    });
+
+    }
   });
+});
 router.post("/dashboard-data", async (req, res) => {
   try {
     const db = mongoose.connection.db; // Get the MongoDB connection
@@ -204,7 +232,7 @@ router.post("/dashboard-data", async (req, res) => {
     }, 0);
 
     const averageHandlingTime = totalHandlingTime / machinePerformances.length;
-    
+
     const totalImpressions = machinePerformances.reduce((sum, performance) => {
       return sum + Number(performance.Impressions);
     }, 0);

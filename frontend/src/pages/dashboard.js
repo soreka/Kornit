@@ -31,7 +31,7 @@ function DashBoard({ filter }) {
 
     const [expandedBoxId, setExpandedBoxId] = useState(null);
     const [dashboardData, setDashboardData] = useState(null);
-    const [surveyData, setSurveyData] = useState(null);
+    const [surveyDataResponsePercentage, setsurveyDataResponsePercentage] = useState(null);
 
     const handleExpand = (boxId) => {
         setExpandedBoxId(prevId => (prevId === boxId ? null : boxId));
@@ -54,6 +54,7 @@ function DashBoard({ filter }) {
                 });
 
                 setDashboardData(response.data);
+                console.log("mac");
                 console.log("Dashboard data:", response.data);
 
             } catch (error) {
@@ -67,9 +68,9 @@ function DashBoard({ filter }) {
     useEffect(() => {
         const fetchSurveyData = async () => {
             try {
-                const response = await apiClient.post('/dashboard-surveys');
-                setSurveyData(response.data.data.surveys);
-                console.log("Survey data:", response.data.data.surveys);
+                console.log("getting data from backend");
+                const response = await apiClient.get('/dashboard-surveys');
+                setsurveyDataResponsePercentage(response.data);
 
             } catch (error) {
                 console.error('Error fetching survey data:', error);
@@ -78,6 +79,7 @@ function DashBoard({ filter }) {
 
         fetchSurveyData();
     }, []);
+
 
     return (
         <div className='dashboard'>
@@ -131,25 +133,29 @@ function DashBoard({ filter }) {
                     <Grid item xs={4} sm={8} md={12}>
                         <Typography variant='h6' className='dataTitle'>Performance</Typography>
                     </Grid>
+                  {surveyDataResponsePercentage && surveyDataResponsePercentage.data &&< DataBoxSurvey 
+                        dataType={surveyDataResponsePercentage.dataType}
+                        mainDataValue={surveyDataResponsePercentage.data.percentageAnswered}
+                        title1={surveyDataResponsePercentage.data.title1}
+                        title2={surveyDataResponsePercentage.data.title2}
+                        surveys={surveyDataResponsePercentage.data.surveys}
+                        subDataValue={surveyDataResponsePercentage.data.subDataValue}
+                        boxType='Small'
+                        color='primary'
+                        isExpanded={expandedBoxId === 1}
+                        onExpand={() => handleExpand(1)} />
+                        }
+                
+ 
 
-                    {surveyData && surveyData.cfi.questions.map((survey, index) => (
-                        <DataBoxSurvey key={index}
-                            dataType={survey.question}
-                            mainDataValue={survey.answer}
-                            boxType='Small'
-                            color='primary'
-                            isExpanded={expandedBoxId === index}
-                            onExpand={() => handleExpand(index)} />
-                    ))}
-
-                    <DataBoxSurvey dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' isExpanded={expandedBoxId === 2}
+                    {/* <DataBoxSurvey dataType='Impression growth' mainDataValue='20%' subDataValue='+10pp' boxType='Small' color='secondary' isExpanded={expandedBoxId === 2}
                         onExpand={() => handleExpand(2)} />
                     <DataBoxSurvey dataType='Impression printed' mainDataValue='2.5M' subDataValue='+300k' boxType='Small' color='secondary' isExpanded={expandedBoxId === 3}
                         onExpand={() => handleExpand(3)} />
                     <DataBoxSurvey dataType='Handling time' subDataType='Seconds' mainDataValue='25' subDataValue='+3' boxType='Small' color='primary' isExpanded={expandedBoxId === 4}
                         onExpand={() => handleExpand(4)} />
                     <DataBoxSurvey dataType='Utilization' mainDataValue='33%' subDataValue='-10pp' boxType='Small' color='other' isExpanded={expandedBoxId === 5}
-                        onExpand={() => handleExpand(5)} />
+                        onExpand={() => handleExpand(5)} /> */}
                 </Grid>
             </Grid>
             <Grid container className='mt-0'>

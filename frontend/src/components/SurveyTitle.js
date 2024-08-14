@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import NonResponderCard from './NonResponderCard'; 
-import QuestionBox from './QuestionBox'; 
+import NonResponderCard from './NonResponderCard';
+import QuestionBox from './QuestionBox';
 
-const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonResponders }) => {
-    const [activeComponent, setActiveComponent] = useState(null); 
+const SurveyTitle = ({ title, expandedSurveyType, onClick, array1, array2, nonResponders }) => {
+    const [activeComponent, setActiveComponent] = useState(null);
     const [expandedBoxId, setExpandedBoxId] = useState(null);
-
+    
     const handleButtonClick = (e, component) => {
-        e.stopPropagation(); 
-        setActiveComponent(prev => (prev === component ? null : component)); 
+        e.stopPropagation();
+        setActiveComponent(prev => (prev === component ? null : component));
     };
 
     const handleExpand = (boxId) => {
@@ -26,14 +26,14 @@ const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonRespond
                     <Box display="flex" alignItems="center">
                         <Button
                             onClick={(e) => handleButtonClick(e, 'Nonresponders')}
-                            sx={{ 
+                            sx={{
                                 color: activeComponent === 'Nonresponders' ? '#4860C1' : '#354052',
                                 textTransform: 'none',
                                 fontSize: 'small',
                                 padding: 0,
                                 minWidth: 'auto',
                                 mr: 2,
-                                border: 'none', 
+                                border: 'none',
                                 backgroundColor: 'transparent'
                             }}
                         >
@@ -41,14 +41,14 @@ const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonRespond
                         </Button>
                         <Button
                             onClick={(e) => handleButtonClick(e, 'Questions')}
-                            sx={{ 
+                            sx={{
                                 color: activeComponent === 'Questions' ? '#4860C1' : '#354052',
                                 textTransform: 'none',
                                 fontSize: 'small',
                                 padding: 0,
                                 minWidth: 'auto',
-                                border: 'none', 
-                                backgroundColor: 'transparent' 
+                                border: 'none',
+                                backgroundColor: 'transparent'
                             }}
                         >
                             Questions
@@ -62,11 +62,11 @@ const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonRespond
                 <Box>
                     {activeComponent === 'Nonresponders' && (
                         <Box>
-                            {nonResponders.length > 0 ? (
-                                nonResponders.map((responder, index) => (
-                                    <NonResponderCard 
+                            {array2.length > 0 ? (
+                                array2.map((responder, index) => (
+                                    <NonResponderCard
                                         key={index}
-                                        name={responder.name}
+                                        name={responder.name && responder.name}
                                         email={responder.email}
                                         phone_number={responder.phone_number}
                                         mobile_phone_number={responder.mobile_phone_number}
@@ -80,16 +80,16 @@ const SurveyTitle = ({ title, expandedSurveyType, onClick, questions, nonRespond
 
                     {activeComponent === 'Questions' && (
                         <Box>
-                            {questions.length > 0 ? (
-                                questions.map(question => (
-                                    <QuestionBox 
+                            {array1.length > 0 ? (
+                                array1.map(question => (
+                                    <QuestionBox
                                         key={question.boxId}
                                         question={question.question}
-                                        percentage={question.percentage}
-                                        content={question.content}
+                                        percentage={question.answeredPercentage}
+                                        content={question.question}
                                         boxId={question.boxId}
                                         expandedBoxId={expandedBoxId}
-                                        handleExpand={handleExpand} 
+                                        handleExpand={handleExpand}
                                     />
                                 ))
                             ) : (
