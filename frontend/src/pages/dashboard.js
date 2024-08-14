@@ -8,6 +8,7 @@ import DataBoxPerformance from '../components/DataBoxPerformance';
 
 import { useNavigate } from "react-router-dom";
 import apiClient from './apiClient';
+import WeekNavigator from '../components/Weeknavigatore';
 
 function DashBoard({ filter, setFilter }) {
     useMemo(() => {
@@ -131,14 +132,15 @@ function DashBoard({ filter, setFilter }) {
                         className={clickedDate === "Custom" ? "clickedDate" : ''}
                     >Custom</Button>
                 </div>
-                <div className='chooseWeek'>
+                {/* <div className='chooseWeek'>
                     <div className='right-arrow' />
                     <div className='currentWeek'>
                         <Typography variant='p'>Week 29</Typography>
                         <Typography variant='p'>10/07 - 14/07</Typography>
                     </div>
                     <div className='left-arrow' />
-                </div>
+                </div> */}
+                <WeekNavigator />
             </Grid >
             <Grid container className='mt-0'>
                 <Grid container spacing={1} rowGap={2} columns={{ xs: 4, sm: 8, md: 12 }} className='mt-0'>
