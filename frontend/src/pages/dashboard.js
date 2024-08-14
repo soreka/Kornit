@@ -146,10 +146,11 @@ function DashBoard({ filter, setFilter }) {
             <Grid container className='mt-0'>
                 <Grid container spacing={1} rowGap={2} columns={{ xs: 4, sm: 8, md: 12 }} className='mt-0'>
                     <Grid item xs={4} sm={8} md={12}>
-                        <Typography variant='h6' className='dataTitle'>Performance</Typography>
+                        <Typography variant='h6' className='dataTitle'>Surveys</Typography>
                     </Grid>
                   {surveyDataResponsePercentage && surveyDataResponsePercentage.data &&< DataBoxSurvey 
-                        dataType={surveyDataResponsePercentage.dataType}
+                        dataType={surveyDataResponsePercentage.data.dataType}
+                        subDataType={surveyDataResponsePercentage.data.subDataType}
                         mainDataValue={surveyDataResponsePercentage.data.percentageAnswered}
                         title1={surveyDataResponsePercentage.data.title1}
                         title2={surveyDataResponsePercentage.data.title2}
