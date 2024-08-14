@@ -38,15 +38,23 @@ function DashBoard({ filter, setFilter }) {
 
     useEffect(() => {
         setFilter(JSON.parse(sessionStorage.getItem('filters') ?? '{}'));
+        console.log(JSON.stringify({
+            "SelectedFilters": {
+                "timeFilter": "YeartoDate",
+                "regions": filter?.s?.map((value) => value.title),
+                "clientNames": filter?.c?.filter(value => value.isSelected).map((value) => value.name),
+                "machineTypes": filter?.m
+            }
+        }));
         const fetchDashboardData = async () => {
             try {
                 const response = await apiClient.post('/dashboard-data', {
 
                     "SelectedFilters": {
                         "timeFilter": "YeartoDate",
-                        "regions": [],
-                        "clientNames": ["Air Waves LLC., dba Hybrid Digital-Lewis Center, OH"],
-                        "machineTypes": ["Atlas MAX"]
+                        "regions": filter?.s?.map((value) => value.title) ?? [],
+                        "clientNames": filter?.c?.filter(value => value.isSelected).map((value) => value.name) ?? [],
+                        "machineTypes": filter?.m ?? []
                     }
 
                 });
