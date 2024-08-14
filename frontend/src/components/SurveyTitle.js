@@ -66,7 +66,7 @@ const SurveyTitle = ({ title, expandedSurveyType, onClick, array1, array2, nonRe
                                 array2.map((responder, index) => (
                                     <NonResponderCard
                                         key={index}
-                                        name={responder.name && responder.name}
+                                        name={responder}
                                         email={responder.email}
                                         phone_number={responder.phone_number}
                                         mobile_phone_number={responder.mobile_phone_number}
